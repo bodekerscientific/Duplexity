@@ -2,6 +2,8 @@
 
 Duplexity is a Python package that calculates validation metrics on meteorological data, including dynamical weather forecasts, AI model outputs and atmospheric reanalyses.
 
+[Duplexity Logo](./logo_v1.png)
+
 ## Installation
 
 We have not yet made Duplexity pip-installable. Currently the best way to use Duplexity is to clone the repo locally. Follow these steps to install Duplexity:
