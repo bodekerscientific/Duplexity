@@ -3,6 +3,9 @@ import xarray as xr
 import pandas as pd
 from typing import List, Tuple, Union, Optional
 from scipy.ndimage import uniform_filter
+import scipy.signal
+from skimage.draw import disk
+
 from duplexity.utils import _check_shapes, _to_numpy, _binary_classification
 
 ###########################################
@@ -635,75 +638,48 @@ def calculate_categorical_metrics(observed: Union[np.array, xr.DataArray, pd.Dat
 ################################
 
 def fss_init(threshold: float, scale: int) -> dict:
-    """Initialize a fractions skill score (FSS) verification object.
+    """
+    Initialize a fractions skill score (FSS) verification object.
     
     Parameters:
-    threshold (float): Threshold value for binarizing the data.
-    scale (int): Size of the neighborhood for calculating fractions.
+        threshold (float): Threshold value for binarizing the data.
+        scale (int): Size of the neighborhood for calculating fractions.
+
     """
-    fss = dict(threshold=threshold, scale=scale, sum_fct_sq=0.0, sum_fct_obs=0.0, sum_obs_sq=0.0)
+    fss = dict(threshold=threshold, scale=scale, sum_output_sq=0.0, sum_output_observed=0.0, sum_observed_sq=0.0)
     return fss
 
 
-def calculate_np(bp: np.array, scale: int) -> np.array:
-    """
-    Calculate the Neighborhood Predictor (NP) for the given Binary Predictor and neighborhood size.
-    
-    Parameters:
-    bp: Binary predictor array.
-    scale (int): Size of the neighborhood for calculating fractions.
-    """
-    if scale > 1:
-        n_bp = uniform_filter(bp, size=scale, mode='constant', cval=0.0)
-    else:
-        n_bp = bp
-    return n_bp
 
-def calculate_fbs(np_output: np.array, np_observed: np.array) -> float:
-    """
-    Calculate the Fractions Brier Score (FBS).
-    
-    Parameters:
-    np_output (np.array): Neighborhood predictor for the output data.
-    np_observed (np.array): Neighborhood predictor for the observed data.
-    """
-    return np.mean((np_output - np_observed) ** 2)
-
-def calculate_wfbs(np_output: np.ndarray, np_observed: np.ndarray) -> float:
-    """
-    Calculate the Weighted Fractions Brier Score (WFBS).
-    
-    Parameters:
-    np_output (np.ndarray): Neighborhood predictor for the output data.
-    np_observed (np.ndarray): Neighborhood predictor for the observed data.
-    
-    Returns:
-    float: Weighted Fractions Brier Score.
-    """
-    return np.mean(np_output ** 2) + np.mean(np_observed ** 2)
-
-
-def fss_update(fss: dict, forecast: np.ndarray, observed: np.ndarray) -> None:
+def fss_update(fss: dict, output: np.ndarray, observed: np.ndarray) -> None:
     """
     Update the FSS object with new forecast and observed data.
     
     Parameters:
     fss (dict): FSS verification object.
-    forecast (np.ndarray): Forecasted data array.
-    observed (np.ndarray): Observed data array.
+    output (np.array): Forecasted data array.
+    observed (np.array): Observed data array.
     """
+    if len(output.shape) != 2 or len(observed.shape) != 2 or output.shape != observed.shape:
+        raise ValueError("Forecast and observation must be two-dimensional having the same dimensions")
+
     threshold = fss['threshold']
     scale = fss['scale']
 
-    bp_output = _binary_classification(forecast, threshold)
-    bp_observed = _binary_classification(observed, threshold)
+    binary_output = _binary_classification(output, threshold)
+    binary_observed = _binary_classification(observed, threshold)
     
-    np_output = calculate_np(bp_output, scale)
-    np_observed = calculate_np(bp_observed, scale)
+    if fss["scale"] > 1:
+        smoothed_forecast = uniform_filter(binary_output, size=scale, mode="constant", cval=0.0)
+        smoothed_observation = uniform_filter(binary_observed, size=scale, mode="constant", cval=0.0)
+    else:
+        smoothed_forecast = binary_output
+        smoothed_observation = binary_observed
 
-    fss['sum_fct_sq'] += np.sum(np_output ** 2)
-    fss['sum_obs_sq'] += np.sum(np_observed ** 2)
-    fss['sum_fct_obs'] += np.sum(np_output * np_observed)
+
+    fss["sum_observation_power"] += np.nansum(smoothed_observation ** 2)
+    fss["sum_forecast_observation_correlation"] += np.nansum(smoothed_forecast * smoothed_observation)
+    fss["sum_forecast_power"] += np.nansum(smoothed_forecast ** 2)
 
 
 def fss_compute(fss: dict) -> float:
@@ -717,22 +693,22 @@ def fss_compute(fss: dict) -> float:
     float: Fractions Skill Score.
     """
 
-    sum_fct_sq = fss['sum_fct_sq']
-    sum_obs_sq = fss['sum_obs_sq']
-    sum_fct_obs = fss['sum_fct_obs']
+    sum_output_sq = fss['sum_output_sq']
+    sum_observed_sq = fss['sum_obs_sq']
+    sum_output_observed = fss['sum_output_observed']
 
-    fbs = sum_fct_sq + sum_obs_sq - 2 * sum_fct_obs
-    wfbs = sum_fct_sq + sum_obs_sq
+    numerator = sum_output_sq + sum_observed_sq - 2 * sum_output_observed
+    denominator = sum_output_sq + sum_observed_sq
 
-    if wfbs == 0:
+    if denominator == 0:
         return np.nan
 
-    fss_value = 1 - fbs / wfbs
-    return fss_value
+    fss_values = 1 - numerator / denominator
+    return fss_values
 
 def calculate_fss_score(output:Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
                    observed:Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                   threshold: float, scale: int) -> float:
+                   thresholds: Union[float,List[float]], scales:Union[int, List[int]]) -> float:
     """
     Calculate the Fractions Skill Score (FSS) for the given forecast and observed data.
     
@@ -740,15 +716,30 @@ def calculate_fss_score(output:Union[np.array, xr.DataArray, pd.DataFrame, List[
     forecast (np.ndarray): Forecasted data.
     observed (np.ndarray): Observed data.
     threshold (float): Threshold value for binarizing the data.
-    scale (int): Size of the neighborhood for calculating fractions.
+    scales (Union[int, List[int]]): Size of the neighborhood for calculating fractions.
     
     Returns:
     float: Fractions Skill Score (FSS) value.
     """
-    fss = fss_init(threshold, scale)
-    for f, o in zip(output, observed):
-        fss_update(fss, f, o)
-    return fss_compute(fss)
+    output = _to_numpy(output)
+    observed = _to_numpy(observed)
+    _check_shapes(output, observed)
+
+    if isinstance(thresholds, float):
+        thresholds = [thresholds]
+
+    if isinstance(scales, int):
+        scales = [scales]
+
+
+    fss_scores = []
+    for scale in scales:
+        for threshold in thresholds:
+            fss = fss_init(threshold, scale)
+            fss_update(fss, output, observed)
+            fss_scores.append(fss_compute(fss))
+
+    return fss_scores
 
 
 
@@ -756,120 +747,121 @@ def calculate_fss_score(output:Union[np.array, xr.DataArray, pd.DataFrame, List[
 ##          Precipitation Smoothing Distance               ##
 #############################################################
 
-import numpy as np
-import scipy.signal
-from skimage.draw import disk
-from tqdm import tqdm
-
-def construct_circular_kernel(radius: float) -> np.ndarray:
+def circular_kernel(radius: int) -> np.array:
     """
-    Construct a circular kernel for smoothing.
+    Creates a circular kernel with the given radius.
     
     Parameters:
-    radius (float): Radius of the circular kernel.
+    radius (int): The radius of the circular kernel.
     
     Returns:
-    np.ndarray: Normalized circular kernel.
+    np.array: A 2D array representing the circular kernel.
     """
-    r_int_max = int(np.floor(radius))
-    shape = (r_int_max * 2 + 1, r_int_max * 2 + 1)
-    circular_kernel = np.zeros(shape)
-    rr, cc = disk((r_int_max, r_int_max), radius + 0.0001, shape=shape)
-    circular_kernel[rr, cc] = 1
-    return circular_kernel / np.sum(circular_kernel)
+    # Calculate the size of the kernel
+    r_max = int(np.floor(radius))
+    size = 2 * r_max + 1
+    shape = (size, size)
+    kernel = np.zeros((size, size), dtype =np.float32)
+    
+    # Calculate the center of the kernel
+    center = r_max
+    
+    # Get the row and column coordinates for the disk
+    row_coords, col_coords = disk((center, center), radius + 0.0001, shape=shape)
 
-def calculate_pss(forecast_smooth: np.ndarray, observed_smooth: np.ndarray, radius: float, Q: float) -> float:
+    # Set the pixels inside the disk to 1
+    kernel[row_coords, col_coords] = 1
+
+    # Normalize the kernel so that the sum of its elements equals 1
+    kernel /= np.sum(kernel)
+
+    return kernel
+
+
+
+def calculate_pss(output_smooth: np.array, observed_smooth: np.array, radius: int, Q: float) -> float:
     """
-    Calculate the Precipitation Symmetry Score (PSS).
+    Calculates the Precipitation Smooth Score (PSS).
     
     Parameters:
-    forecast_smooth (np.ndarray): Smoothed forecast data.
-    observed_smooth (np.ndarray): Smoothed observed data.
+    output_smooth (np.array): Smoothed forecast data.
+    observed_smooth (np.array): Smoothed observed data.
     radius (float): Radius for smoothing.
     Q (float): Quality factor.
     
     Returns:
     float: Precipitation Symmetry Score (PSS).
     """
-    kernel = construct_circular_kernel(radius)
-    forecast_smooth = scipy.signal.fftconvolve(forecast_smooth, kernel, mode='full')
+    kernel = circular_kernel(radius)
+    output_smooth = scipy.signal.fftconvolve(output_smooth, kernel, mode='full')
     observed_smooth = scipy.signal.fftconvolve(observed_smooth, kernel, mode='full')
-    PSS = 1.0 - 1.0 / (2.0 * float(forecast_smooth.size) * Q) * np.abs(forecast_smooth - observed_smooth).sum()
+    PSS = 1.0 - 1.0 / (2.0 * float(output_smooth.size) * Q) * np.abs(output_smooth - observed_smooth).sum()
     return PSS
 
-def calculate_psd(forecast_array: np.ndarray, observed_array: np.ndarray) -> float:
+def calculate_psd(output: np.ndarray, observed: np.ndarray) -> float:
     """
-    Calculate the Precipitation Symmetry Distance (PSD).
-    
-    Parameters:
-    forecast_array (np.ndarray): Forecast data array.
-    observed_array (np.ndarray): Observed data array.
-    
-    Returns:
-    float: Precipitation Symmetry Distance (PSD).
     """
-    forecast = forecast_array.copy()
-    observed = observed_array.copy()
+    output = output.copy()
+    observed = observed.copy()
 
-    if forecast.shape != observed.shape:
-        raise ValueError("forecast_array and observed_array do not have the same shape.")
+    _check_shapes(output, observed)
     
-    if forecast.ndim != 2 or observed.ndim != 2:
-        raise ValueError("forecast_array and observed_array are not two-dimensional.")
+    if output.ndim != 2 or observed.ndim != 2:
+        raise ValueError("output and observed data are not two-dimensional.")
     
-    if forecast.size == 0 or observed.size == 0:
-        raise ValueError("forecast_array and observed_array are empty.")
+    if output.size == 0 or observed.size == 0:
+        raise ValueError("output and observed data are empty.")
     
-    if not np.all(np.isfinite(forecast)) or not np.all(np.isfinite(observed)):
-        raise ValueError("forecast_array or observed_array contain non-numeric values.")
+    if not np.all(np.isfinite(output)) or not np.all(np.isfinite(observed)):
+        raise ValueError("output and observed data contain non-numeric values.")
     
-    if isinstance(forecast, np.ma.MaskedArray) or isinstance(observed, np.ma.MaskedArray):
-        raise ValueError("forecast_array or observed_array are masked arrays which is not allowed.")
+    if isinstance(output, np.ma.MaskedArray) or isinstance(observed, np.ma.MaskedArray):
+        raise ValueError("output and observed data are masked arrays which is not allowed.")
     
-    if np.any(forecast < 0) or np.any(observed < 0):
-        raise ValueError("forecast_array or observed_array contain negative values which is not allowed.")
+    if np.any(output < 0) or np.any(observed < 0):
+        raise ValueError("output and observed data contain negative values which is not allowed.")
     
-    forecast = forecast.astype(float)
+    output = output.astype(float)
     observed = observed.astype(float)
     
-    forecast_avg = np.average(forecast)
+    output_avg = np.average(output)
     observed_avg = np.average(observed)
     
-    if forecast_avg == 0 or observed_avg == 0:
+    if output_avg == 0 or observed_avg == 0:
         return np.nan  # Return NaN for empty fields    
     
-    forecast_norm = forecast / forecast_avg
+    output_norm = output / output_avg
     observed_norm = observed / observed_avg
     
-    if np.array_equal(forecast_norm, observed_norm):
+    if np.array_equal(output_norm, observed_norm):
         return 0
     
-    forecast_diff = forecast_norm - np.minimum(forecast_norm, observed_norm)
-    observed_diff = observed_norm - np.minimum(forecast_norm, observed_norm)
+    output_diff = output_norm - np.minimum(output_norm, observed_norm)
+    observed_diff = observed_norm - np.minimum(output_norm, observed_norm)
     
-    Q = forecast_diff.sum() / forecast_norm.sum()
+    Q = output_diff.sum() / output_norm.sum()
     
     initial_radius = 1
-    PSS_initial = calculate_pss(forecast_diff, observed_diff, initial_radius, Q)
+    PSS_initial = calculate_pss(output_diff, observed_diff, initial_radius, Q)
     
     if PSS_initial > 0.5:
         return 1
     
-    diagonal = np.sqrt(forecast.shape[0]**2 + forecast.shape[1]**2)
+    diagonal = np.sqrt(output.shape[0]**2 + output.shape[1]**2)
     dr = np.ceil(diagonal * 0.05)
     
     radius2 = initial_radius + dr
-    PSS2 = calculate_pss(forecast_diff, observed_diff, radius2, Q)
+    PSS2 = calculate_pss(output_diff, observed_diff, radius2, Q)
     
     while PSS2 < 0.5:
         initial_radius = radius2
         PSS_initial = PSS2
         radius2 = initial_radius + dr
-        PSS2 = calculate_pss(forecast_diff, observed_diff, radius2, Q)
+        PSS2 = calculate_pss(output_diff, observed_diff, radius2, Q)
     
     while radius2 - initial_radius > 1:
         new_radius = int((initial_radius + radius2) / 2)
-        PSS_new = calculate_pss(forecast_diff, observed_diff, new_radius, Q)
+        PSS_new = calculate_pss(output_diff, observed_diff, new_radius, Q)
         
         if PSS_new > 0.5:
             radius2 = new_radius
@@ -907,13 +899,9 @@ def validate_with_psd(observed: np.ndarray, forecasted: np.ndarray) -> np.ndarra
 
 
 
-#############################################
-##                     RAPSD               ##
-#############################################
-
-import numpy as np
-import matplotlib.pyplot as plt
-
+##################################################################################
+##            Radially Averaged Power Spectral Density (RAPSD)                  ##
+##################################################################################
 
 
 def compute_centred_coord_array(H: int, W: int) -> Tuple[np.array, np.array]:
