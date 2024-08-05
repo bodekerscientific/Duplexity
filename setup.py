@@ -13,6 +13,7 @@ setup(
         "scikit-learn",
         "tqdm",
         "seaborn",  
+        "scikit-image"
     ],
     author="Lexi Xu",
     author_email="lexi.xu12@gmail.com",
