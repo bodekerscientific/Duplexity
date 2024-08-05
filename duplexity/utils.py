@@ -65,6 +65,6 @@ def _binary_classification(data: np.array, threshold: float) -> np.array:
     np.array
         Binary classified data.
     """
-    binary_data = data >= threshold
+    binary_data = np.array(data >= threshold)
     return binary_data.astype(int)
     

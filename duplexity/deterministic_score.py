@@ -3,7 +3,7 @@ import xarray as xr
 import pandas as pd
 from typing import List, Tuple, Union, Optional
 from scipy.ndimage import uniform_filter
-from utils import _check_shapes, _to_numpy, _binary_classification
+from duplexity.utils import _check_shapes, _to_numpy, _binary_classification
 
 ###########################################
 ##             Continuous Score          ##
@@ -882,6 +882,7 @@ def calculate_psd(forecast_array: np.ndarray, observed_array: np.ndarray) -> flo
     
     return PSD
 
+
 def validate_with_psd(observed: np.ndarray, forecasted: np.ndarray) -> np.ndarray:
     """
     Validate the forecasted data with the Precipitation Symmetry Distance (PSD).
@@ -910,3 +911,125 @@ def validate_with_psd(observed: np.ndarray, forecasted: np.ndarray) -> np.ndarra
 ##                     RAPSD               ##
 #############################################
 
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+
+def compute_centred_coord_array(H: int, W: int) -> Tuple[np.array, np.array]:
+    """Compute a 2D coordinate array, where the origin is at the center.
+    Parameters
+    ----------
+    H : int
+      The height of the array.
+    W : int
+      The width of the array.
+    Returns
+    -------
+    out : ndarray
+      The coordinate array.
+    Examples
+    --------
+    >>> compute_centred_coord_array(2, 2)
+    (array([[-2],\n
+        [-1],\n
+        [ 0],\n
+        [ 1],\n
+        [ 2]]), array([[-2, -1,  0,  1,  2]]))
+    """
+
+    if H % 2 == 1:
+        H_slice = np.s_[-int(H / 2): int(H / 2) + 1]
+    else:
+        H_slice = np.s_[-int(H / 2): int(H / 2)]
+
+    if W % 2 == 1:
+        W_slice = np.s_[-int(W / 2): int(W / 2) + 1]
+    else:
+        W_slice = np.s_[-int(W / 2): int(W / 2)]
+
+    y_coords, x_coords = np.ogrid[H_slice, W_slice]
+
+    return y_coords, x_coords
+
+
+def rapsd(
+    data, fft_method=None, return_freq=False, d=1.0, normalize=False, **fft_kwargs
+):
+    """Compute radially averaged power spectral density (RAPSD) from the given
+    2D input field.
+    Parameters
+    ----------
+    field: array_like
+        A 2d array of shape (m, n) containing the input field.
+    fft_method: object
+        A module or object implementing the same methods as numpy.fft and
+        scipy.fftpack. If set to None, field is assumed to represent the
+        shifted discrete Fourier transform of the input field, where the
+        origin is at the center of the array
+        (see numpy.fft.fftshift or scipy.fftpack.fftshift).
+    return_freq: bool
+        Whether to also return the Fourier frequencies.
+    d: scalar
+        Sample spacing (inverse of the sampling rate). Defaults to 1.
+        Applicable if return_freq is 'True'.
+    normalize: bool
+        If True, normalize the power spectrum so that it sums to one.
+    Returns
+    -------
+    out: ndarray
+      One-dimensional array containing the RAPSD. The length of the array is
+      int(l/2) (if l is even) or int(l/2)+1 (if l is odd), where l=max(m,n).
+    freq: ndarray
+      One-dimensional array containing the Fourier frequencies.
+    References
+    ----------
+    :cite:`RC2011`
+    """
+
+    if len(data.shape) == 2:
+        h, w = data.shape
+    elif len(data.shape) == 3:
+        h,w = data.shape[1:]
+    else:
+        raise ValueError(
+            f"{len(data.shape)} dimensions are found, but the number "
+            "of dimensions should be 2"
+        )
+
+    if np.sum(np.isnan(data)) > 0:
+        raise ValueError("input field should not contain nans")
+
+
+    y_coords,  x_coords = compute_centred_coord_array(h, w)
+    radial_grid = np.sqrt( x_coords *  x_coords + y_coords * y_coords).round()
+    max_dim = max(data.shape[0], data.shape[1]) 
+
+    if max_dim % 2 == 1:
+        radial_range = np.arange(0, int(max_dim / 2) + 1)
+    else:
+        radial_range = np.arange(0, int(max_dim / 2))
+
+    if fft_method is not None:
+        psd = fft_method.fftshift(fft_method.fft2(data, **fft_kwargs))
+        psd = np.abs(psd) ** 2 / psd.size
+    else:
+        psd = data
+
+    result = []
+    for r in radial_range:
+        mask = radial_grid == r
+        psd_vals = psd[mask]
+        result.append(np.mean(psd_vals))
+
+    result = np.array(result)
+
+    if normalize:
+        result /= np.sum(result)
+
+    if return_freq:
+        frequencies = np.fft.fftfreq(max_dim, d=d)
+        frequencies = frequencies[radial_range]
+        return result, frequencies
+    else:
+        return result

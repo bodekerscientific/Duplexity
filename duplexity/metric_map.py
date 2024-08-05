@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from typing import Union
 from duplexity.deterministic_score import mean_absolute_error, mean_squared_error, bias, pearson_correlation, root_mean_squared_error
 from typing import Union, Callable, Dict, List, Tuple
+from duplexity.utils import _to_numpy, _check_shapes
 
 
 def initialize_metrics(shape: tuple) -> np.array:
@@ -34,7 +35,7 @@ def update_metrics(metric_array: np.array, observed:np.array, output:np.array, m
     np.array: Updated metric array.
     """
     # Check shapes of metric arrays before updating
-    assert output.shape == observed.shape
+    _check_shapes(observed, output)
 
     if output.ndim == 3:
         for i in range(output.shape[1]):
@@ -51,31 +52,6 @@ def update_metrics(metric_array: np.array, observed:np.array, output:np.array, m
                 result = metric_function(observed[i, j], output[i, j])
                 metric_array[i, j] += result if not np.isnan(result) else 0
     return metric_array
-
-def _to_numpy(data: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> np.array:
-    """
-    Convert input data to numpy array.
-    
-    Parameters:
-    data : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Input data to be converted.
-        
-    Returns
-    -------
-    np.array
-        Converted numpy array.
-    """
-    if isinstance(data, xr.DataArray):
-        return data.to_numpy()
-    elif isinstance(data, pd.DataFrame):
-        return data.values
-    elif isinstance(data, list):
-        return np.array([d.to_numpy() if isinstance(d, xr.DataArray) else (d.values if isinstance(d, pd.DataFrame) else d) for d in data])
-    elif isinstance(data, np.ndarray):
-        return data
-    else:
-        raise ValueError("Unsupported data type")
-
 
 def grid_point_calculate(observed: Union[
                      np.array, 
