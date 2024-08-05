@@ -1,10 +1,11 @@
-duplexity/deterministic_score copy.py
-duplexity/__pycache__/__init__.cpython-311.pyc
-duplexity/__pycache__/deterministic_score.cpython-311.pyc
-duplexity/__pycache__/metric_map.cpython-311.pyc
-duplexity/__pycache__/utils.cpython-311.pyc
-duplexity/__pycache__/__init__.cpython-311.pyc
-duplexity/__pycache__/deterministic_score.cpython-311.pyc
-duplexity/__pycache__/__init__.cpython-311.pyc
-duplexity/__pycache__/metric_map.cpython-311.pyc
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore egg-info directories
+*.egg-info/
+
+# Lexi's ignores
 duplexity/rapsd.py
+duplexity/deterministic_score copy.py
