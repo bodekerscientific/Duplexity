@@ -4,9 +4,8 @@ import xarray as xr
 import pandas as pd
 import matplotlib.pyplot as plt
 from typing import Union
-from duplexity.deterministic_score import DeterministicScore
-from typing import Union, Callable, Dict, List
-#import seaborn as sns
+from duplexity.deterministic_score import mean_absolute_error, mean_squared_error, bias, pearson_correlation, root_mean_squared_error
+from typing import Union, Callable, Dict, List, Tuple
 
 
 def initialize_metrics(shape: tuple) -> np.array:
@@ -38,17 +37,19 @@ def update_metrics(metric_array: np.array, observed:np.array, output:np.array, m
     assert output.shape == observed.shape
 
     if output.ndim == 3:
+        for i in range(output.shape[1]):
+            for j in range(output.shape[2]):
+                if np.all(output == output[0]) or np.isnan(output).any():
+                    continue
+                result = metric_function(observed[:,i, j], output[:,i, j])
+                metric_array[i, j] += result if not np.isnan(result) else 0
+
+
+    elif output.ndim == 2:
         for i in range(output.shape[0]):
             for j in range(output.shape[1]):
-                for k in range(output.shape[2]):
-                    result = metric_function(observed[i, j, k], output[i, j, k])
-                    metric_array[i, j, k] += result if not np.isnan(result) else 0
-        return np.mean(metric_array, axis=0)
-
-    for i in range(output.shape[0]):
-        for j in range(output.shape[1]):
-            result = metric_function(observed[i, j], output[i, j])
-            metric_array[i, j] += result if not np.isnan(result) else 0
+                result = metric_function(observed[i, j], output[i, j])
+                metric_array[i, j] += result if not np.isnan(result) else 0
     return metric_array
 
 def _to_numpy(data: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> np.array:
@@ -87,7 +88,8 @@ def grid_point_calculate(observed: Union[
                      xr.DataArray, 
                      pd.DataFrame, 
                      List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]
-                 ]
+                 ],
+                 metrics: Union[str, Tuple[str], List[str]] = None
                  ) -> dict:
 
     """
@@ -106,24 +108,40 @@ def grid_point_calculate(observed: Union[
 
     observed = _to_numpy(observed)
     output = _to_numpy(output)
-    det_score = DeterministicScore(observed=observed, output=output)
 
+    if observed.ndim == 2:
+        shape = observed.shape
+    elif observed.ndim == 3:
+        shape = observed.shape[1:]
+    else:
+        raise ValueError("Unsupported number of dimensions for observed data")
+    
+    available_metrics = {
+        "MAE": mean_absolute_error,
+        "MSE": mean_squared_error,
+        "RMSE": root_mean_squared_error,
+        "Bias": bias
+    }
 
-
-    shape = observed.shape
-    metrics_result = {}
+    if metrics is None:
+        selected_metrics = available_metrics.keys()
+    else:
+        if isinstance(metrics, str):
+            selected_metrics = [metrics]
+        else:
+            selected_metrics = metrics
 
     # Initialize metric arrays
-    metrics_result["MAE"] = initialize_metrics(shape)
-    metrics_result["MSE"] = initialize_metrics(shape)
-    metrics_result["RMSE"] = initialize_metrics(shape)
-    metrics_result["Bias"] = initialize_metrics(shape)
+    metrics_result = {metric: initialize_metrics(shape) for metric in selected_metrics}
 
-    # Update metrics for each grid point
-    metrics_result["MAE"] = update_metrics(metrics_result["MAE"], observed, output, det_score.mae)
-    metrics_result["MSE"] = update_metrics(metrics_result["MSE"], observed, output, det_score.mse)
-    metrics_result["RMSE"] = update_metrics(metrics_result["RMSE"], observed, output, det_score.rmse)
-    metrics_result["Bias"] = update_metrics(metrics_result["Bias"], observed, output, det_score.bias)
+
+
+    for metric in selected_metrics:
+        if metric in available_metrics:
+            metrics_result[metric] = update_metrics(metrics_result[metric], observed, output, available_metrics[metric])
+        else:
+            raise ValueError(f"Metric '{metric}' is not recognized. Available metrics are: {list(available_metrics.keys())}")
+
 
 
     return metrics_result
