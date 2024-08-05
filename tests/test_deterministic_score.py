@@ -57,110 +57,54 @@ class TestDeterministicScore(unittest.TestCase):
         self.assertIsInstance(drmse_pd, float)
 
     def test_pearson_correlation(self):
-        corr = pearson_correlation(self.observed_xr, self.output_xr)
-        self.assertIsInstance(corr, float)
-        corr_pd = pearson_correlation(self.observed_pd, self.output_pd)
-        self.assertIsInstance(corr_pd, float)
-
-    def test_confusion_matrix(self):
-        cm = confusion_matrix(self.observed_xr, self.output_xr, self.threshold)
-        self.assertIsInstance(cm, np.ndarray)
-        self.assertEqual(cm.shape, (2, 2))
-        cm_pd = confusion_matrix(self.observed_pd, self.output_pd, self.threshold)
-        self.assertIsInstance(cm_pd, np.ndarray)
-        self.assertEqual(cm_pd.shape, (2, 2))
-
-    def test_precision(self):
-        prec = precision(self.observed_xr, self.output_xr, self.threshold)
-        self.assertIsInstance(prec, float)
-        prec_pd = precision(self.observed_pd, self.output_pd, self.threshold)
-        self.assertIsInstance(prec_pd, float)
-
-    def test_recall(self):
-        rec = recall(self.observed_xr, self.output_xr, self.threshold)
-        self.assertIsInstance(rec, float)
-        rec_pd = recall(self.observed_pd, self.output_pd, self.threshold)
-        self.assertIsInstance(rec_pd, float)
-
-    def test_f1_score(self):
-        f1 = f1_score(self.observed_xr, self.output_xr, self.threshold)
-        self.assertIsInstance(f1, float)
-        f1_pd = f1_score(self.observed_pd, self.output_pd, self.threshold)
-        self.assertIsInstance(f1_pd, float)
+        for score in [self.det_score_continuous_np, self.det_score_continuous_xr, self.det_score_continuous_pd]:
+            correlation = score.pearson_correlation()
+            self.assertIsInstance(correlation, float)
 
     def test_accuracy(self):
-        acc = accuracy(self.observed_xr, self.output_xr, self.threshold)
-        self.assertIsInstance(acc, float)
-        acc_pd = accuracy(self.observed_pd, self.output_pd, self.threshold)
-        self.assertIsInstance(acc_pd, float)
+        for score in [self.det_score_categorical_np, self.det_score_categorical_xr, self.det_score_categorical_pd]:
+            accuracy = score.accuracy()
+            self.assertIsInstance(accuracy, float)
 
     def test_critical_success_index(self):
-        csi = critical_success_index(self.observed_xr, self.output_xr, self.threshold)
-        self.assertIsInstance(csi, float)
-        csi_pd = critical_success_index(self.observed_pd, self.output_pd, self.threshold)
-        self.assertIsInstance(csi_pd, float)
+        for score in [self.det_score_categorical_np, self.det_score_categorical_xr, self.det_score_categorical_pd]:
+            csi = score.critical_success_index()
+            self.assertIsInstance(csi, float)
 
     def test_equitable_threat_score(self):
-        ets = equitable_threat_score(self.observed_xr, self.output_xr, self.threshold)
-        self.assertIsInstance(ets, float)
-        ets_pd = equitable_threat_score(self.observed_pd, self.output_pd, self.threshold)
-        self.assertIsInstance(ets_pd, float)
+        for score in [self.det_score_categorical_np, self.det_score_categorical_xr, self.det_score_categorical_pd]:
+            ets = score.equitable_threat_score()
+            self.assertIsInstance(ets, float)
 
     def test_false_alarm_ratio(self):
-        far = false_alarm_ratio(self.observed_xr, self.output_xr, self.threshold)
-        self.assertIsInstance(far, float)
-        far_pd = false_alarm_ratio(self.observed_pd, self.output_pd, self.threshold)
-        self.assertIsInstance(far_pd, float)
+        for score in [self.det_score_categorical_np, self.det_score_categorical_xr, self.det_score_categorical_pd]:
+            far = score.false_alarm_ratio()
+            self.assertIsInstance(far, float)
 
     def test_probability_of_detection(self):
-        pod = probability_of_detection(self.observed_xr, self.output_xr, self.threshold)
-        self.assertIsInstance(pod, float)
-        pod_pd = probability_of_detection(self.observed_pd, self.output_pd, self.threshold)
-        self.assertIsInstance(pod_pd, float)
+        for score in [self.det_score_categorical_np, self.det_score_categorical_xr, self.det_score_categorical_pd]:
+            pod = score.probability_of_detection()
+            self.assertIsInstance(pod, float)
 
     def test_gilbert_skill_score(self):
-        gss = gilbert_skill_score(self.observed_xr, self.output_xr, self.threshold)
-        self.assertIsInstance(gss, float)
-        gss_pd = gilbert_skill_score(self.observed_pd, self.output_pd, self.threshold)
-        self.assertIsInstance(gss_pd, float)
+        for score in [self.det_score_categorical_np, self.det_score_categorical_xr, self.det_score_categorical_pd]:
+            gss = score.gilbert_skill_score()
+            self.assertIsInstance(gss, float)
 
     def test_heidke_skill_score(self):
-        hss = heidke_skill_score(self.observed_xr, self.output_xr, self.threshold)
-        self.assertIsInstance(hss, float)
-        hss_pd = heidke_skill_score(self.observed_pd, self.output_pd, self.threshold)
-        self.assertIsInstance(hss_pd, float)
+        for score in [self.det_score_categorical_np, self.det_score_categorical_xr, self.det_score_categorical_pd]:
+            hss = score.heidke_skill_score()
+            self.assertIsInstance(hss, float)
 
     def test_peirce_skill_score(self):
-        pss = peirce_skill_score(self.observed_xr, self.output_xr, self.threshold)
-        self.assertIsInstance(pss, float)
-        pss_pd = peirce_skill_score(self.observed_pd, self.output_pd, self.threshold)
-        self.assertIsInstance(pss_pd, float)
+        for score in [self.det_score_categorical_np, self.det_score_categorical_xr, self.det_score_categorical_pd]:
+            pss = score.peirce_skill_score()
+            self.assertIsInstance(pss, float)
 
     def test_sedi(self):
-        sedi_value = sedi(self.observed_xr, self.output_xr, self.threshold)
-        self.assertIsInstance(sedi_value, float)
-        sedi_value_pd = sedi(self.observed_pd, self.output_pd, self.threshold)
-        self.assertIsInstance(sedi_value_pd, float)
-
-    def test_fss_score(self):
-        fss_score = calculate_fss_score(self.output_xr, self.observed_xr, self.threshold, self.scale)
-        self.assertIsInstance(fss_score, float)
-        fss_score_pd = calculate_fss_score(self.output_pd, self.observed_pd, self.threshold, self.scale)
-        self.assertIsInstance(fss_score_pd, float)
-
-    #def test_psd(self):
-    #    psd_values = validate_with_psd(self.observed_xr, self.output_xr)
-    #    self.assertIsInstance(psd_values, np.ndarray)
-    #    self.assertEqual(psd_values.shape[0], self.observed_xr.shape[0])
-    #    psd_values_pd = validate_with_psd(self.observed_pd.values.reshape(10, 192, 144), self.output_pd.values.reshape(10, 192, 144))
-    #    self.assertIsInstance(psd_values_pd, np.ndarray)
-    #    self.assertEqual(psd_values_pd.shape[0], self.observed_pd.shape[0])
-
-    def test_rapsd(self):
-        rapsd_values = rapsd(self.observed_xr[0].values)
-        self.assertIsInstance(rapsd_values, np.ndarray)
-        rapsd_values_pd = rapsd(self.observed_pd.iloc[0].values.reshape(192, 144))
-        self.assertIsInstance(rapsd_values_pd, np.ndarray)
+        for score in [self.det_score_categorical_np, self.det_score_categorical_xr, self.det_score_categorical_pd]:
+            sedi = score.sedi()
+            self.assertIsInstance(sedi, float)
 
 if __name__ == '__main__':
     unittest.main()

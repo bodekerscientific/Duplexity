@@ -1,7 +1,9 @@
 
 
-import numpy as np
 import matplotlib.pyplot as plt
+
+
+
 
 def compute_centred_coord_array(M, N):
     """Compute a 2D coordinate array, where the origin is at the center.
