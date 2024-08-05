@@ -1,0 +1,16 @@
+README.md
+setup.py
+duplexity/__init__.py
+duplexity/deterministic_score.py
+duplexity/metric_map.py
+duplexity/probabilistic.py
+duplexity/rapsd.py
+duplexity/visualization.py
+duplexity.egg-info/PKG-INFO
+duplexity.egg-info/SOURCES.txt
+duplexity.egg-info/dependency_links.txt
+duplexity.egg-info/requires.txt
+duplexity.egg-info/top_level.txt
+tests/__init__.py
+tests/test_deterministic_score.py
+tests/test_metric_map.py
