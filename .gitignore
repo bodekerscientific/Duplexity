@@ -4,7 +4,7 @@
 __pycache__/
 
 # Ignore egg-info directories
-*.egg-info/
+*.egg-info
 
 # Lexi's ignores
 duplexity/rapsd.py
