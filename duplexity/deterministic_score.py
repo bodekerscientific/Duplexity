@@ -660,8 +660,7 @@ def fss_update(fss: dict, output: np.ndarray, observed: np.ndarray) -> None:
     output (np.array): Forecasted data array.
     observed (np.array): Observed data array.
     """
-    if len(output.shape) != 2 or len(observed.shape) != 2 or output.shape != observed.shape:
-        raise ValueError("Forecast and observation must be two-dimensional having the same dimensions")
+    _check_shapes(output, observed)
 
     threshold = fss['threshold']
     scale = fss['scale']
@@ -669,17 +668,17 @@ def fss_update(fss: dict, output: np.ndarray, observed: np.ndarray) -> None:
     binary_output = _binary_classification(output, threshold)
     binary_observed = _binary_classification(observed, threshold)
     
-    if fss["scale"] > 1:
+    if scale > 1:
         smoothed_forecast = uniform_filter(binary_output, size=scale, mode="constant", cval=0.0)
         smoothed_observation = uniform_filter(binary_observed, size=scale, mode="constant", cval=0.0)
     else:
         smoothed_forecast = binary_output
         smoothed_observation = binary_observed
 
+    fss["sum_output_sq"] += np.nansum(smoothed_forecast ** 2)
+    fss["sum_output_observed"] += np.nansum(smoothed_forecast * smoothed_observation)
+    fss["sum_observed_sq"] += np.nansum(smoothed_observation ** 2)
 
-    fss["sum_observation_power"] += np.nansum(smoothed_observation ** 2)
-    fss["sum_forecast_observation_correlation"] += np.nansum(smoothed_forecast * smoothed_observation)
-    fss["sum_forecast_power"] += np.nansum(smoothed_forecast ** 2)
 
 
 def fss_compute(fss: dict) -> float:
@@ -692,9 +691,8 @@ def fss_compute(fss: dict) -> float:
     Returns:
     float: Fractions Skill Score.
     """
-
     sum_output_sq = fss['sum_output_sq']
-    sum_observed_sq = fss['sum_obs_sq']
+    sum_observed_sq = fss['sum_observed_sq']
     sum_output_observed = fss['sum_output_observed']
 
     numerator = sum_output_sq + sum_observed_sq - 2 * sum_output_observed
@@ -703,8 +701,9 @@ def fss_compute(fss: dict) -> float:
     if denominator == 0:
         return np.nan
 
-    fss_values = 1 - numerator / denominator
-    return fss_values
+    fss_value = 1 - numerator / denominator
+    return fss_value
+
 
 def calculate_fss_score(output:Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
                    observed:Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
@@ -713,7 +712,7 @@ def calculate_fss_score(output:Union[np.array, xr.DataArray, pd.DataFrame, List[
     Calculate the Fractions Skill Score (FSS) for the given forecast and observed data.
     
     Parameters:
-    forecast (np.ndarray): Forecasted data.
+    output (np.ndarray): Forecasted data.
     observed (np.ndarray): Observed data.
     threshold (float): Threshold value for binarizing the data.
     scales (Union[int, List[int]]): Size of the neighborhood for calculating fractions.
