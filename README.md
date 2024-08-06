@@ -22,9 +22,10 @@ Navigate to the directory you would like to clone the Duplexity repository into,
 git clone https://github.com/lexixu19/duplexity.git
 ```
 #### Activate your environment
-Activate the [conda](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) or [pip](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) environment you would like to use Duplexity within. For example:
+Create and/or activate the [conda](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) or [pip](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) environment you would like to use Duplexity within. For example:
 
 ```
+conda create --name duplexity
 conda activate duplexity
 ```
 #### Install Duplexity
