@@ -32,7 +32,9 @@ def _to_numpy(data:Union[
     elif isinstance(data, np.ndarray):
         return data
     else:
-        raise ValueError("Unsupported data type")
+        raise ValueError(f"Unsupported data type: {type(data)}. Supported data types are: np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]")
+    
+
     
 
 
