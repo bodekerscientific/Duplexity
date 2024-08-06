@@ -51,6 +51,33 @@ def _check_shapes(observed, output):
         raise ValueError("Observed and output data must have the same shape.")
     
 
+def _check_binary_data(data: np.array) -> bool:
+    """
+    Check if the given numpy array contains only binary data (0s and 1s).
+
+    Parameters:
+    data (np.array): Input numpy array.
+
+    Returns:
+    bool: True if the array contains only 0s and 1s, False otherwise.
+    """
+    # Check if all elements are either 0 or 1
+    if data.ndim != 2:
+        raise ValueError("Input data must contain only binary values (0s and 1s).")
+
+def _check_2d_data(data: np.array) -> bool:
+    """
+    Check if the given numpy array is 2D.
+
+    Parameters:
+    data (np.array): Input numpy array.
+
+    Returns:
+    bool: True if the array is 2D, False otherwise.
+    """
+    if len(data.shape) != 2:
+        raise ValueError("Input data must be 2D.")
+
 def _binary_classification(data: np.array, threshold: float) -> np.array:
     """
     Perform binary classification on input data based on a threshold.
