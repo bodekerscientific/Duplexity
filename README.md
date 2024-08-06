@@ -28,7 +28,12 @@ Activate the [conda](https://conda.io/projects/conda/en/latest/user-guide/tasks/
 conda activate duplexity
 ```
 #### Install Duplexity
-Ensure you are in the highest level of the Duplexity directory on your local system. You should be able to see `setup.py` in this directory. Run the following command to install Duplexity in your environment:
+Ensure you are in the highest level of the Duplexity directory on your local system:
+
+```
+cd duplexity
+```
+You should be able to see `setup.py` in this directory. Run the following command to install Duplexity in your environment:
 
 ```
 pip install .
