@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "duplexity"
+version = "0.0.1"
+description = "Duplexity is a Python package that calculates validation metrics on meteorological data, including dynamical weather forecasts, AI model outputs, and atmospheric reanalyses."
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.6"
+authors = [
+    { name = "Lexi Xu", email = "lexi.xu12@gmail.com" },
+    { name = "Emily O'Riordan", email = "emily@bodekerscientific.com" }
+]
+dependencies = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "matplotlib",
+    "xarray",
+    "scikit-learn",
+    "tqdm",
+    "seaborn",
+    "scikit-image"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
