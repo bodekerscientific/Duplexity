@@ -62,7 +62,8 @@ def _check_binary_data(data: np.array) -> bool:
     bool: True if the array contains only 0s and 1s, False otherwise.
     """
     # Check if all elements are either 0 or 1
-    if data.ndim != 2:
+    # Check if all elements are either 0 or 1
+    if not np.all((data == 0) | (data == 1)):
         raise ValueError("Input data must contain only binary values (0s and 1s).")
 
 def _check_2d_data(data: np.array) -> bool:
