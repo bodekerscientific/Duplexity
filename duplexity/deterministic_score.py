@@ -5,8 +5,9 @@ from typing import List, Tuple, Union, Optional
 from scipy.ndimage import uniform_filter
 import scipy.signal
 from skimage.draw import disk
+from duplexity.utils import _to_numpy, _check_shapes, _check_binary_data, _check_2d_data, _binary_classification
 
-from duplexity.utils import _check_shapes, _to_numpy, _binary_classification
+
 
 ###########################################
 ##             Continuous Score          ##
@@ -637,13 +638,16 @@ def calculate_categorical_metrics(observed: Union[np.array, xr.DataArray, pd.Dat
 ##           FSS              ##
 ################################
 
-def fss_init(threshold: float, scale: int) -> dict:
+def fss_initialize(threshold: float, scale: int) -> dict:
     """
-    Initialize a fractions skill score (FSS) verification object.
+    Initialize a fractions skill score (FSS) object.
     
     Parameters:
-        threshold (float): Threshold value for binarizing the data.
-        scale (int): Size of the neighborhood for calculating fractions.
+        threshold (float): The intensity threshold value for binarizing the data.
+        scale (int): Size of the neighborhood for calculating fractions, in pixels.
+
+    Returns:
+        dict: FSS verification object.
 
     """
     fss = dict(threshold=threshold, scale=scale, sum_output_sq=0.0, sum_output_observed=0.0, sum_observed_sq=0.0)
@@ -651,22 +655,28 @@ def fss_init(threshold: float, scale: int) -> dict:
 
 
 
-def fss_update(fss: dict, output: np.ndarray, observed: np.ndarray) -> None:
+def fss_update(fss: dict, output: np.array, observed: np.array) -> None:
     """
     Update the FSS object with new forecast and observed data.
     
     Parameters:
-    fss (dict): FSS verification object.
-    output (np.array): Forecasted data array.
-    observed (np.array): Observed data array.
+    fss (dict): 
+        FSS verification object.
+    output (np.array): 
+        Model output data array in shape (height, width).
+    observed (np.array): 
+        Observed data array in shape (height, width).
     """
     _check_shapes(output, observed)
+    _check_2d_data(output)
+    _check_2d_data (observed)
+
 
     threshold = fss['threshold']
     scale = fss['scale']
 
-    binary_output = _binary_classification(output, threshold)
-    binary_observed = _binary_classification(observed, threshold)
+    binary_output = (_binary_classification(output, threshold)).astype(float)
+    binary_observed =(_binary_classification(observed, threshold)).astype(float)
     
     if scale > 1:
         smoothed_forecast = uniform_filter(binary_output, size=scale, mode="constant", cval=0.0)
@@ -707,16 +717,16 @@ def fss_compute(fss: dict) -> float:
 
 def calculate_fss_score(output:Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
                    observed:Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                   thresholds: Union[float,List[float]], scales:Union[int, List[int]]) -> float:
+                   threshold: Union[float, int, List[Union[float, int]]], scale:Union[float, int,  List[Union[float, int]]]) -> float:
     """
     Calculate the Fractions Skill Score (FSS) for the given forecast and observed data.
     
     Parameters:
-    output (np.ndarray): Forecasted data.
-    observed (np.ndarray): Observed data.
-    threshold (float): Threshold value for binarizing the data.
-    scales (Union[int, List[int]]): Size of the neighborhood for calculating fractions.
-    
+    output (Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]): Model output data.
+    observed (Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]): Observed data.
+    threshold (Union[float, int, List[Union[float, int]]]): Threshold value for binarizing the data.
+    scale (Union[float, int,  List[Union[float, int]]]): Size of the neighborhood for calculating fractions.
+
     Returns:
     float: Fractions Skill Score (FSS) value.
     """
@@ -724,17 +734,19 @@ def calculate_fss_score(output:Union[np.array, xr.DataArray, pd.DataFrame, List[
     observed = _to_numpy(observed)
     _check_shapes(output, observed)
 
-    if isinstance(thresholds, float):
-        thresholds = [thresholds]
 
-    if isinstance(scales, int):
-        scales = [scales]
+
+    if isinstance(threshold, (float, int)):
+        threshold = [threshold]
+
+    if isinstance(scale, (int, float)):
+        scale = [scale]
 
 
     fss_scores = []
-    for scale in scales:
-        for threshold in thresholds:
-            fss = fss_init(threshold, scale)
+    for scale_item in scale:
+        for thre_item in threshold:
+            fss = fss_initialize(thre_item, scale_item)
             fss_update(fss, output, observed)
             fss_scores.append(fss_compute(fss))
 
