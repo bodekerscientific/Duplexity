@@ -4,7 +4,9 @@ Duplexity is a Python package that calculates validation metrics on meteorologic
 
 ## Installation
 
-We have not yet made Duplexity pip-installable. Currently the best way to use Duplexity is to clone the repo locally. Follow these steps to install Duplexity:
+We have not yet made Duplexity pip-installable, as the project is still in the early development stages. This means the code is constantly changing, and we currently don't guarantee backwards compatibility when changes are made. Once a stable release of Duplexity is available, we will upload Duplexity to PyPI to make it pip-installable.
+
+### Follow these steps to install Duplexity:
 
 #### Prerequisites
 Ensure you have the following prerequisites installed on your system:
@@ -12,13 +14,33 @@ Ensure you have the following prerequisites installed on your system:
  - Python (version 3.7 or later)
  - Git
 
-#### Installation
+#### Clone the directory
 
-Clone the Duplexity repository from GitHub:
+Navigate to the directory you would like to clone the Duplexity repository into, and clone from GitHub:
 
 ```
 git clone https://github.com/lexixu19/duplexity.git
 ```
+#### Activate your environment
+Activate the [conda](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) or [pip](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) environment you would like to use Duplexity within. For example:
+
+```
+conda activate duplexity
+```
+#### Install Duplexity
+Ensure you are in the highest level of the Duplexity directory on your local system. You should be able to see `setup.py` in this directory. Run the following command to install Duplexity in your environment:
+
+```
+pip install .
+```
+
+Note: if you are a contributor or editor of the Duplexity environment, you should use `pip install -e .` to allow you to make edits which are immediately reflected when you import locally.
+
+### Importing Duplexity
+You should now be able to import Duplexity when running your environment! Try it out:
+
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/62f7ba4a-460a-44b3-bae3-141c5ca50b5f">
+
 
 ## Contributing
 
