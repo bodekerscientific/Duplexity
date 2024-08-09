@@ -1,0 +1,30 @@
+Deterministic Metrics
+=====================
+
+Deterministic metrics are metrics that are calculated in a deterministic way. 
+This means that the same metric will always be calculated in the same way, regardless of the order in which the data is processed. 
+This is important because it allows us to compare the results of different metrics and to ensure that the results are consistent.
+
+.. automodule:: duplexity.deterministic_score
+
+
+1. Mean Squared Error (MSE)
+   Mean Squared Error measures the average of the squares of the errors—that is, the average squared difference between the estimated values and the actual value.
+
+    .. autofunction:: duplexity.deterministic_score.mean_squared_error
+
+2. Mean Absolute Error (MAE)
+.. autofunction:: duplexity.deterministic_score.mean_absolute_error
+
+3. Root Mean Squared Error (RMSE)
+.. autofunction:: duplexity.deterministic_score.root_mean_squared_error
+
+4. Bias
+.. autofunction:: duplexity.deterministic_score.bias
+
+5. Debiased Root Mean Squared Error
+.. autofunction:: duplexity.deterministic_score.debiased_root_mean_squared_error
+
+6. Pearson Correlation Coefficient
+.. autofunction:: duplexity.deterministic_score.pearson_correlation_coefficient
+

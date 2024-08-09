@@ -13,7 +13,7 @@ from duplexity.deterministic_score import *
 class TestDeterministicScore(unittest.TestCase):
 
     def setUp(self):
-        self.observed_data = np.random.rand(10, 192, 144)  # Random data to simulate observations
+        self.observed_data = np.random.rand(192, 144)  # Random data to simulate observations
         self.output_data = self.observed_data + np.random.normal(0, 0.1, self.observed_data.shape)  # Simulate model output with some noise
 
         self.observed_xr = xr.DataArray(self.observed_data)

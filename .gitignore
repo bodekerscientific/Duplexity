@@ -9,3 +9,4 @@ __pycache__/
 # Lexi's ignores
 duplexity/rapsd.py
 duplexity/deterministic_score copy.py
+duplexity/test_duplexity.ipynb

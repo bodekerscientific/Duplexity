@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deterministic Metrics &mdash; Duplexity 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Duplexity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Deterministic Metrics</a><ul>
+<li><a class="reference internal" href="#duplexity.deterministic_score.mean_squared_error"><code class="docutils literal notranslate"><span class="pre">mean_squared_error()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Duplexity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Deterministic Metrics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/deterministic.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="deterministic-metrics">
+<h1>Deterministic Metrics<a class="headerlink" href="#deterministic-metrics" title="Link to this heading"></a></h1>
+<p>Deterministic metrics are metrics that are calculated in a deterministic way.
+This means that the same metric will always be calculated in the same way, regardless of the order in which the data is processed.
+This is important because it allows us to compare the results of different metrics and to ensure that the results are consistent.</p>
+<ol class="arabic" id="module-duplexity.deterministic_score">
+<li><p>Mean Squared Error (MSE)
+Mean Squared Error measures the average of the squares of the errors—that is, the average squared difference between the estimated values and the actual value.</p>
+<blockquote>
+<div><dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.mean_squared_error">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">mean_squared_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dataset</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dataset</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/duplexity/deterministic_score.html#mean_squared_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.mean_squared_error" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Mean Squared Error (MSE).</p>
+<p>The MSE measures the average of the squares of the errors, which is the average squared difference
+between the estimated values and the actual value. It is a measure of the quality of an estimator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>xr.Dataset</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Observed values.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>xr.Dataset</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Model output values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mean Squared Error (MSE).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</li>
+</ol>
+<p>2. Mean Absolute Error (MAE)
+.. autofunction:: duplexity.deterministic_score.mean_absolute_error</p>
+<p>3. Root Mean Squared Error (RMSE)
+.. autofunction:: duplexity.deterministic_score.root_mean_squared_error</p>
+<p>4. Bias
+.. autofunction:: duplexity.deterministic_score.bias</p>
+<p>5. Debiased Root Mean Squared Error
+.. autofunction:: duplexity.deterministic_score.debiased_root_mean_squared_error</p>
+<p>6. Pearson Correlation Coefficient
+.. autofunction:: duplexity.deterministic_score.pearson_correlation_coefficient</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Lexi Xu, Emily O&#39;Riordan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
