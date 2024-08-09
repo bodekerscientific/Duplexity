@@ -1,0 +1,7 @@
+sphinx>=4.0  # The Sphinx version 
+sphinx_rtd_theme  # The Read the Docs theme
+sphinx-autodoc-typehints  # A Sphinx extension for type hints in autodoc
+sphinxcontrib-napoleon  # For Google style docstrings
+sphinxcontrib-httpdomain  # Example of another Sphinx extension
+recommonmark  # If you are using Markdown instead of reStructuredText
+-e . # The path to Duplexity's root directory 
