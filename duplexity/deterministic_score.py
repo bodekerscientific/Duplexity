@@ -1,3 +1,47 @@
+"""
+Deterministic Score
+===================
+
+Forecast evaluation and skill scores for deterministic continuous forecasts.
+
+
+Continuous Metrics
+------------------
+.. autosummary::
+    :toctree: ../generated/
+
+    mean_absolute_error
+    mean_squared_error
+    root_mean_squared_error
+    bias
+    debiased_root_mean_squared_error
+    pearson_correlation
+
+Categorical Metrics
+-------------------
+.. autosummary::
+    :toctree: ../generated/
+
+    confusion_matrix
+    precision
+    recall
+    f1_score
+    accuracy
+    critical_success_index
+    equitable_threat_score
+    false_alarm_ratio
+    probability_of_detection
+    gilbert_skill_score
+    heidke_skill_score
+    peirce_skill_score
+    symmetric_extremal_dependence_index
+
+"""
+
+
+
+
+
 import numpy as np
 import xarray as xr
 import pandas as pd
@@ -5,7 +49,7 @@ from typing import List, Tuple, Union, Optional
 from scipy.ndimage import uniform_filter
 import scipy.signal
 from skimage.draw import disk
-from duplexity.utils import _to_numpy, _check_shapes, _check_binary_data, _check_2d_data, _binary_classification
+from duplexity.utils import _to_numpy, _check_shapes, _check_2d_data, _binary_classification
 
 
 
@@ -22,76 +66,129 @@ all_continuous_metrics = [
     "Pearson Correlation" # Pearson Correlation
 ]
 
-def mean_absolute_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                        output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
+def mean_absolute_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                        output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]) -> float:
     """
-    Calculate the Mean Absolute Error (MAE).
-
-    The MAE measures the average magnitude of the absolute errors between observed and predicted values, 
-    providing a linear score that does not consider the direction of errors.
+    Calculate the Mean Absolute Error (MAE) between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
 
     Returns
     -------
     float
-        Mean Absolute Error (MAE).
+        The Mean Absolute Error (MAE), which measures the average magnitude of the absolute errors 
+        between observed and predicted values. MAE provides a linear score that does not consider the direction of errors.
+
+    Notes
+    -----
+    The MAE is a widely used metric in regression analysis and is particularly useful for evaluating model performance 
+    where all errors are weighted equally.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the MAE for each pair of elements in the lists and then return the average of these individual MAEs.
+
+    Example
+    -------
+    >>> observed_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> output_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> mean_absolute_error(observed_data, output_data)
+    0.337  # Example output, depends on the random values
+
+    In this example, `mean_absolute_error` calculates the MAE for each pair of `xr.DataArray` objects in `observed_data` 
+    and `output_data` and then averages these values to produce the final MAE.
     """
     observed = _to_numpy(observed)
     output = _to_numpy(output)
     _check_shapes(observed, output)
     return np.mean(np.abs(observed - output))
 
-def mean_squared_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                       output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
+def mean_squared_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                       output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]) -> float:
     """
-    Calculate the Mean Squared Error (MSE).
-
-    The MSE measures the average of the squares of the errors, which is the average squared difference 
-    between the estimated values and the actual value. It is a measure of the quality of an estimator.
+    Calculate the Mean Squared Error (MSE) between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
 
     Returns
     -------
     float
-        Mean Squared Error (MSE).
+        The Mean Squared Error (MSE), which measures the average squared difference between observed and predicted values. 
+        MSE is a quadratic scoring rule that penalizes larger errors more than smaller ones.
+
+    Notes
+    -----
+    The MSE is a common metric in regression analysis, used to measure the accuracy of a model. 
+    Unlike MAE, it gives more weight to larger errors due to the squaring of differences.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the MSE for each pair of elements in the lists and then return the average of these individual MSEs.
+
+    Example
+    -------
+    >>> observed_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> output_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> mean_squared_error(observed_data, output_data)
+    0.112  # Example output, depends on the random values
+
+    In this example, `mean_squared_error` calculates the MSE for each pair of `xr.DataArray` objects in `observed_data` 
+    and `output_data` and then averages these values to produce the final MSE.
     """
+
     observed = _to_numpy(observed)
     output = _to_numpy(output)
     _check_shapes(observed, output)
 
     return np.mean((observed - output) ** 2)
 
-def root_mean_squared_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                            output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
+def root_mean_squared_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                            output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]) -> float:
     """
-    Calculate the Root Mean Squared Error (RMSE).
-
-    The RMSE is the square root of the average of squared differences between prediction and actual observation. 
-    It is a measure of the differences between values predicted by a model and the values observed.
+    Calculate the Root Mean Squared Error (RMSE) between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
 
     Returns
     -------
     float
-        Root Mean Squared Error (RMSE).
+        The Root Mean Squared Error (RMSE), which is the square root of the average squared differences 
+        between observed and predicted values. RMSE is sensitive to large errors and is often used to assess the accuracy of a model.
+
+    Notes
+    -----
+    RMSE is a commonly used metric in regression analysis that provides an overall measure of the error magnitude. 
+    It is particularly useful when comparing different models or algorithms, as it combines the advantages of both 
+    the mean absolute error (MAE) and the mean squared error (MSE).
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the RMSE for each pair of elements in the lists and then return the average of these individual RMSEs.
+
+    Example
+    -------
+    >>> observed_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> output_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> root_mean_squared_error(observed_data, output_data)
+    0.355  # Example output, depends on the random values
+
+    In this example, `root_mean_squared_error` calculates the RMSE for each pair of `xr.DataArray` objects in `observed_data` 
+    and `output_data` and then averages these values to produce the final RMSE.
     """
     observed = _to_numpy(observed)
     output = _to_numpy(output)
@@ -99,25 +196,43 @@ def root_mean_squared_error(observed: Union[np.array, xr.DataArray, pd.DataFrame
 
     return np.sqrt(np.mean((observed - output) ** 2))
 
-def bias(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-         output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
+def bias(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+         output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]) -> float:
     """
-    Calculate the Bias.
-
-    Bias is the difference between the average prediction of our model and the correct value which we are trying to predict. 
-    High bias can cause an algorithm to miss the relevant relations between features and target outputs.
+    Calculate the bias between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
 
     Returns
     -------
     float
-        Bias value.
+        The bias, which is the average difference between the observed and model output values. 
+        Positive bias indicates overestimation by the model, while negative bias indicates underestimation.
+
+    Notes
+    -----
+    Bias is a simple but important metric that indicates the overall tendency of a model to overestimate or 
+    underestimate the observed values. It is often used in conjunction with other metrics like RMSE or MAE 
+    to provide a fuller picture of model performance.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the bias for each pair of elements in the lists and then return the average of these individual biases.
+
+    Example
+    -------
+    >>> observed_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> output_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> bias(observed_data, output_data)
+    -0.027  # Example output, depends on the random values
+
+    In this example, `bias` calculates the bias for each pair of `xr.DataArray` objects in `observed_data` 
+    and `output_data` and then averages these values to produce the final bias.
     """
     observed = _to_numpy(observed)
     output = _to_numpy(output)
@@ -125,25 +240,44 @@ def bias(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.Dat
 
     return np.mean(output - observed)
 
-def debiased_root_mean_squared_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                                     output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
+def debiased_root_mean_squared_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                                     output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]) -> float:
     """
-    Calculate the Debiased Root Mean Squared Error (DRMSE).
-
-    DRMSE adjusts the RMSE by removing the bias from the predictions before computing the error. 
-    This provides a better indication of the accuracy of predictions by compensating for systematic errors.
+    Calculate the Debiased Root Mean Squared Error (DRMSE) between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
 
     Returns
     -------
     float
-        Debiased Root Mean Squared Error (DRMSE).
+        The Debiased Root Mean Squared Error (DRMSE), which is the square root of the mean squared error 
+        calculated after removing the bias between observed and predicted values.
+
+    Notes
+    -----
+    The Debiased Root Mean Squared Error (DRMSE) adjusts for any systematic bias in the predictions 
+    by first removing the bias from the predictions and then calculating the root mean squared error. 
+    This metric provides a clearer indication of the model's performance by focusing on the variability 
+    in the errors after accounting for bias.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the DRMSE for each pair of elements in the lists and then return the average of these individual DRMSEs.
+
+    Example
+    -------
+    >>> observed_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> output_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> debiased_root_mean_squared_error(observed_data, output_data)
+    0.278  # Example output, depends on the random values
+
+    In this example, `debiased_root_mean_squared_error` calculates the DRMSE for each pair of `xr.DataArray` objects in `observed_data` 
+    and `output_data` and then averages these values to produce the final DRMSE.
     """
     observed = _to_numpy(observed)
     output = _to_numpy(output)
@@ -153,26 +287,43 @@ def debiased_root_mean_squared_error(observed: Union[np.array, xr.DataArray, pd.
     debiased_predictions = output - bias_value
     return np.sqrt(np.mean((observed - debiased_predictions) ** 2))
 
-def pearson_correlation(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                        output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
+def pearson_correlation(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                        output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]) -> float:
     """
-    Calculate the Pearson correlation coefficient.
-
-    The Pearson correlation coefficient measures the linear correlation between two sets of data. 
-    It ranges from -1 to 1, where 1 is total positive linear correlation, 0 is no linear correlation, 
-    and -1 is total negative linear correlation.
+    Calculate the Pearson correlation coefficient between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
 
     Returns
     -------
     float
-        Pearson correlation coefficient.
+        The Pearson correlation coefficient, a measure of the linear relationship between the observed and model output values. 
+        The coefficient ranges from -1 to 1, where 1 indicates a perfect positive linear relationship, -1 indicates a perfect negative 
+        linear relationship, and 0 indicates no linear relationship.
+
+    Notes
+    -----
+    The Pearson correlation coefficient is a widely used statistical measure to assess the strength and direction 
+    of the linear relationship between two variables. A high absolute value of the coefficient indicates a strong linear relationship.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the Pearson correlation for each pair of elements in the lists and then return the average of these individual coefficients.
+
+    Example
+    -------
+    >>> observed_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> output_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> pearson_correlation(observed_data, output_data)
+    0.756  # Example output, depends on the random values
+
+    In this example, `pearson_correlation` calculates the Pearson correlation coefficient for each pair of `xr.DataArray` objects in `observed_data` 
+    and `output_data` and then averages these values to produce the final coefficient.
     """
     observed = _to_numpy(observed)
     output = _to_numpy(output)
@@ -180,25 +331,52 @@ def pearson_correlation(observed: Union[np.array, xr.DataArray, pd.DataFrame, Li
 
     return np.corrcoef(observed.flatten(), output.flatten())[0, 1]
 
-def calculate_continuous_metrics(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                                 output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def calculate_continuous_metrics(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                                 output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
                                  metrics: Union[str, Tuple[str], List[str]] = None) -> dict:
     """
-    Calculate all defined continuous metrics and return them as a dictionary.
+    Calculate specified continuous metrics between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
+
     metrics : Union[str, Tuple[str], List[str]], optional
-        Specific metric(s) to calculate, by default None. If None, all metrics are calculated.
+        A string, tuple, or list of strings specifying the metrics to calculate. 
+        If not provided, all available metrics will be calculated. Available metrics are:
+        - "MAE" (Mean Absolute Error)
+        - "MSE" (Mean Squared Error)
+        - "RMSE" (Root Mean Squared Error)
+        - "Bias"
+        - "DRMSE" (Debiased Root Mean Squared Error)
+        - "Pearson Correlation"
 
     Returns
     -------
     dict
-        Dictionary with calculated metric names and their values.
+        A dictionary where the keys are the names of the metrics and the values are the corresponding calculated values.
+
+    Notes
+    -----
+    This function allows for flexible calculation of multiple continuous metrics between observed and model output data.
+    Users can specify one or more metrics, or calculate all available metrics by leaving the `metrics` parameter as `None`.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the specified metrics for each pair of elements in the lists and then return the average of these individual metrics.
+
+    Example
+    -------
+    >>> observed_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> output_data = [xr.DataArray(np.random.rand(3, 3)), xr.DataArray(np.random.rand(3, 3))]
+    >>> calculate_continuous_metrics(observed_data, output_data, metrics=["MAE", "RMSE", "Bias"])
+    {'MAE': 0.243, 'RMSE': 0.371, 'Bias': -0.015}  # Example output, depends on the random values
+
+    In this example, `calculate_continuous_metrics` calculates the Mean Absolute Error, Root Mean Squared Error, 
+    and Bias for each pair of `xr.DataArray` objects in `observed_data` and `output_data`, and returns the results as a dictionary.
     """
     available_metrics = {
         "MAE": mean_absolute_error,
@@ -242,26 +420,49 @@ all_categorical_metrics = [
     "SEDI"
 ]
 
-def confusion_matrix(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                     output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def confusion_matrix(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                     output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
                      threshold:float) -> np.array:
     """
-    Calculate the confusion matrix.
-
-    The confusion matrix is used to evaluate the accuracy of a classification model by comparing the 
-    predicted and actual classifications.
+    Calculate the confusion matrix between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+    
+    threshold : float
+        A threshold value used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     np.array
-        Confusion matrix.
+        A confusion matrix in the form of a 2x2 NumPy array, where:
+        - The first row corresponds to the actual negative cases (True Negative, False Positive).
+        - The second row corresponds to the actual positive cases (False Negative, True Positive).
+
+    Notes
+    -----
+    The confusion matrix is a widely used tool for evaluating the performance of a classification model. 
+    It provides insights into the types of errors the model makes and can be used to derive other metrics like precision, recall, and F1-score.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the confusion matrix for each pair of elements in the lists and then return the average confusion matrix.
+
+    Example
+    -------
+    >>> observed_data = np.array([0, 1, 0, 1, 0, 1])
+    >>> output_data = np.array([0.2, 0.8, 0.1, 0.6, 0.4, 0.9])
+    >>> confusion_matrix(observed_data, output_data, threshold=0.5)
+    array([[2, 1],
+           [0, 3]])
+
+    In this example, the `confusion_matrix` function calculates the confusion matrix by comparing the observed values 
+    with the model output values, using a threshold of 0.5 to classify the output data.
     """
     observed = _to_numpy(observed)
     output = _to_numpy(output)
@@ -277,244 +478,405 @@ def confusion_matrix(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[
     
     return np.array([[TP.sum(), FN.sum()], [FP.sum(), TN.sum()]])
 
-def precision(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-              output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def precision(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+              output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
               threshold:float) -> float:
     """
-    Calculate the precision score.
-
-    Precision is the ratio of correctly predicted positive observations to the total predicted positives. 
-    It is also called Positive Predictive Value.
+    Calculate the precision between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+    
+    threshold : float
+        A threshold value used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     float
-        Precision score.
+        The precision, which is the ratio of true positives to the sum of true positives and false positives.
+        Precision = TP / (TP + FP)
+
+    Notes
+    -----
+    Precision is a key metric in binary classification that measures the accuracy of the positive predictions made by the model. 
+    It is particularly useful in situations where the cost of false positives is high.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the precision for each pair of elements in the lists and then return the average precision.
+
+    Example
+    -------
+    >>> observed_data = np.array([0, 1, 0, 1, 0, 1])
+    >>> output_data = np.array([0.2, 0.8, 0.1, 0.6, 0.4, 0.9])
+    >>> precision(observed_data, output_data, threshold=0.5)
+    1.0
+
+    In this example, the `precision` function calculates the precision by comparing the observed values 
+    with the model output values, using a threshold of 0.5 to classify the output data.
     """
     cm = confusion_matrix(observed, output, threshold)
     return cm[0, 0] / (cm[0, 0] + cm[1, 0])
 
-def recall(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-           output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def recall(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+           output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
            threshold:float) -> float:
     """
-    Calculate the recall score.
-
-    Recall is the ratio of correctly predicted positive observations to all observations in the actual class. 
-    It is also called Sensitivity or True Positive Rate.
+    Calculate the recall between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+    
+    threshold : float
+        A threshold value used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     float
-        Recall score.
+        The recall, which is the ratio of true positives to the sum of true positives and false negatives.
+        Recall = TP / (TP + FN)
+
+    Notes
+    -----
+    Recall, also known as sensitivity or true positive rate, is a key metric in binary classification that measures 
+    the model's ability to correctly identify all positive instances. It is particularly important in scenarios where 
+    minimizing false negatives is crucial.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the recall for each pair of elements in the lists and then return the average recall.
+
+    Example
+    -------
+    >>> observed_data = np.array([0, 1, 0, 1, 0, 1])
+    >>> output_data = np.array([0.2, 0.8, 0.1, 0.6, 0.4, 0.9])
+    >>> recall(observed_data, output_data, threshold=0.5)
+    1.0
+
+    In this example, the `recall` function calculates the recall by comparing the observed values 
+    with the model output values, using a threshold of 0.5 to classify the output data.
     """
+
     cm = confusion_matrix(observed, output, threshold)
     return cm[0, 0] / (cm[0, 0] + cm[0, 1])
 
-def f1_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-             output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def f1_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+             output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
              threshold:float) -> float:
     """
-    Calculate the F1 score.
-
-    The F1 score is the weighted average of Precision and Recall. 
-    It is useful when the class distribution is imbalanced.
+    Calculate the F1 score between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+    
+    threshold : float
+        A threshold value used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     float
-        F1 score.
+        The F1 score, which is the harmonic mean of precision and recall.
+        F1 Score = 2 * (Precision * Recall) / (Precision + Recall)
+
+    Notes
+    -----
+    The F1 score is a widely used metric in binary classification that balances precision and recall, making it 
+    particularly useful in scenarios where the distribution of classes is imbalanced or where both false positives 
+    and false negatives need to be considered.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the F1 score for each pair of elements in the lists and then return the average F1 score.
+
+    Example
+    -------
+    >>> observed_data = np.array([0, 1, 0, 1, 0, 1])
+    >>> output_data = np.array([0.2, 0.8, 0.1, 0.6, 0.4, 0.9])
+    >>> f1_score(observed_data, output_data, threshold=0.5)
+    1.0
+
+    In this example, the `f1_score` function calculates the F1 score by first computing the precision and recall using the 
+    specified threshold, and then calculating the harmonic mean of these two metrics.
     """
+
     precision_value = precision(observed, output, threshold)
     recall_value = recall(observed, output, threshold)
     return 2 * (precision_value * recall_value) / (precision_value + recall_value)
 
-def accuracy(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-             output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def accuracy(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+             output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
              threshold:float) -> float:
     """
-    Calculate the accuracy score.
-
-    Accuracy is the ratio of correctly predicted observations to the total observations. 
-    It is the most intuitive performance measure and it is simply a ratio of correctly predicted observation to the total observations.
+    Calculate the accuracy between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+    
+    threshold : float
+        A threshold value used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     float
-        Accuracy score.
+        The accuracy, which is the ratio of the number of correct predictions to the total number of predictions.
+        Accuracy = (TP + TN) / (TP + TN + FP + FN)
+
+    Notes
+    -----
+    Accuracy is a widely used metric in binary classification that measures the overall correctness of the model's predictions.
+    It is most useful when the classes are balanced; however, it can be misleading when dealing with imbalanced datasets.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the accuracy for each pair of elements in the lists and then return the average accuracy.
+
     """
     cm = confusion_matrix(observed, output, threshold)
     return (cm[0, 0] + cm[1, 1]) / cm.sum()
 
-def critical_success_index(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                           output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def critical_success_index(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                           output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
                            threshold:float) -> float:
     """
-    Calculate the Critical Success Index (CSI).
-
-    CSI, also known as the Threat Score, is the ratio of correctly predicted events to the sum of the correctly 
-    predicted events, false alarms, and missed events.
+    Calculate the Critical Success Index (CSI) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+    
+    threshold : float
+        A threshold value used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     float
-        Critical Success Index (CSI).
+        The Critical Success Index (CSI), which is the ratio of true positives to the sum of true positives, false negatives, and false positives.
+        CSI = TP / (TP + FN + FP)
+
+    Notes
+    -----
+    The Critical Success Index (CSI), also known as the Threat Score, is a metric used in binary classification to measure 
+    the accuracy of positive predictions. Unlike accuracy, CSI accounts for both false positives and false negatives, 
+    making it particularly useful in assessing model performance in imbalanced datasets or for rare events.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the CSI for each pair of elements in the lists and then return the average CSI.
     """
+
     cm = confusion_matrix(observed, output, threshold)
     return cm[0, 0] / (cm[0, 0] + cm[0, 1] + cm[1, 0])
 
-def equitable_threat_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                           output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def equitable_threat_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                           output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
                            threshold:float) -> float:
     """
-    Calculate the Equitable Threat Score (ETS).
-
-    ETS is a measure of the skill of a binary classifier, considering the possibility of random hits. 
-    It ranges from -1/3 to 1, with 1 being a perfect score.
+    Calculate the Equitable Threat Score (ETS) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+    
+    threshold : float
+        A threshold value used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     float
-        Equitable Threat Score (ETS).
+        The Equitable Threat Score (ETS), which adjusts the Critical Success Index (CSI) by accounting for hits due to random chance.
+        ETS = (TP - CH) / (TP + FN + FP - CH)
+        where CH (Chance Hits) = (TP + FN) * (TP + FP) / (TP + FN + FP + TN)
+
+    Notes
+    -----
+    The Equitable Threat Score (ETS) is a metric used in binary classification to measure the skill of a model in predicting positive events, 
+    adjusted for the number of hits that could occur by random chance. ETS is particularly useful in scenarios involving rare events or imbalanced datasets, 
+    as it provides a more accurate assessment of model performance than the Critical Success Index (CSI) alone.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the ETS for each pair of elements in the lists and then return the average ETS.
     """
     cm = confusion_matrix(observed, output, threshold)
     hits_random = (cm[0, 0] + cm[1, 0]) * (cm[0, 0] + cm[0, 1]) / cm.sum()
     return (cm[0, 0] - hits_random) / (cm[0, 0] + cm[0, 1] + cm[1, 0] - hits_random)
 
-def false_alarm_ratio(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                      output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def false_alarm_ratio(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                      output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
                       threshold:float) -> float:
     """
-    Calculate the False Alarm Ratio (FAR).
-
-    FAR is the ratio of the number of false alarms to the total number of events that were forecast.
+    Calculate the False Alarm Ratio (FAR) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+    
+    threshold : float
+        A threshold value used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     float
-        False Alarm Ratio (FAR).
+        The False Alarm Ratio (FAR), which is the ratio of false positives to the sum of false positives and true positives.
+        FAR = FP / (FP + TP)
+
+    Notes
+    -----
+    The False Alarm Ratio (FAR) is a metric used in binary classification to measure the proportion of positive predictions that are incorrect. 
+    It is particularly important in scenarios where false positives are costly or problematic. FAR ranges from 0 to 1, with 0 indicating no false alarms 
+    and 1 indicating that all positive predictions are false.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the FAR for each pair of elements in the lists and then return the average FAR.
     """
+
     cm = confusion_matrix(observed, output, threshold)
     return cm[1, 0] / (cm[0, 0] + cm[1, 0])
 
-def probability_of_detection(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                             output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+
+def probability_of_detection(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                             output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
                              threshold:float) -> float:
     """
-    Calculate the Probability of Detection (POD).
-
-    POD, also known as Hit Rate or Sensitivity, is the ratio of correctly predicted positive observations 
-    to all observations in the actual class.
+    Calculate the Probability of Detection (POD) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+    
+    threshold : float
+        A threshold value used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     float
-        Probability of Detection (POD).
+        The Probability of Detection (POD), which is the ratio of true positives to the sum of true positives and false negatives.
+        POD = TP / (TP + FN)
+
+    Notes
+    -----
+    The Probability of Detection (POD), also known as sensitivity or the true positive rate, is a key metric in binary classification 
+    that measures the ability of the model to correctly identify positive cases. A POD of 1 indicates perfect detection of all positive cases, 
+    while a POD of 0 indicates that no positive cases were detected.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the POD for each pair of elements in the lists and then return the average POD.
+
     """
+    
     cm = confusion_matrix(observed, output, threshold)
     return cm[0, 0] / (cm[0, 0] + cm[0, 1])
 
-def gilbert_skill_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                        output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def gilbert_skill_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                        output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
                         threshold:float) -> float:
     """
-    Calculate the Gilbert Skill Score (GSS).
-
-    GSS measures the skill of a forecast relative to random chance, considering both hits and false alarms. 
-    It ranges from -1/3 to 1, where 1 indicates a perfect score.
+    Calculate the Gilbert Skill Score (GSS) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+    
+    threshold : float
+        A threshold value used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     float
-        Gilbert Skill Score (GSS).
+        The Gilbert Skill Score (GSS), also known as the Equitable Threat Score (ETS), which adjusts the Critical Success Index (CSI) 
+        by accounting for hits that could occur due to random chance.
+        GSS = (TP - CH) / (TP + FN + FP - CH)
+        where CH (Chance Hits) = (TP + FN) * (TP + FP) / (TP + FN + FP + TN)
+
+    Notes
+    -----
+    The Gilbert Skill Score (GSS) is a metric used in binary classification to assess the skill of a model by considering 
+    both correct predictions and the impact of random chance. It is particularly useful in cases involving rare events 
+    or imbalanced datasets, where traditional metrics like accuracy may be misleading.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the GSS for each pair of elements in the lists and then return the average GSS.
     """
     cm = confusion_matrix(observed, output, threshold)
     hits_random = (cm[0, 0] + cm[1, 0]) * (cm[0, 0] + cm[0, 1]) / cm.sum()
     return (cm[0, 0] - hits_random) / (cm[0, 0] + cm[0, 1] + cm[1, 0] - hits_random)
 
-def heidke_skill_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                       output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def heidke_skill_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                       output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
                        threshold:float) -> float:
     """
-    Calculate the Heidke Skill Score (HSS).
-
-    HSS measures the skill of a forecast relative to random chance, adjusting for both hits and correct negatives. 
-    It ranges from -∞ to 1, with 1 being a perfect score.
+    Calculate the Heidke Skill Score (HSS) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+    
+    threshold : float
+        A threshold value used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     float
-        Heidke Skill Score (HSS).
+        The Heidke Skill Score (HSS), which measures the skill of a binary classification model compared to random chance.
+        HSS = 2 * (TP * TN - FP * FN) / ((TP + FN) * (FN + TN) + (TP + FP) * (FP + TN))
+
+    Notes
+    -----
+    The Heidke Skill Score (HSS) is a metric used to assess the accuracy of a model's predictions relative to random chance. 
+    Unlike some other metrics, HSS considers all elements of the confusion matrix (TP, TN, FP, FN) and is particularly useful 
+    when the goal is to compare model performance against a baseline of random prediction. HSS ranges from -1 to 1, 
+    where 1 indicates perfect skill, 0 indicates no skill, and negative values indicate worse-than-random performance.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the HSS for each pair of elements in the lists and then return the average HSS.
     """    
     cm = confusion_matrix(observed, output, threshold)
     hits = cm[1, 1]
@@ -526,52 +888,75 @@ def heidke_skill_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, Lis
     accuracy_observed = (hits + correct_negatives) / total
     return (accuracy_observed - accuracy_random) / (1 - accuracy_random) if (1 - accuracy_random) != 0 else 0
 
-def peirce_skill_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                       output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def peirce_skill_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                       output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
                        threshold:float) -> float:
     """
-    Calculate the Peirce Skill Score (PSS).
-
-    PSS measures the ability of a forecast to discriminate between events and non-events, adjusting for 
-    both hits and false alarms. It ranges from -1 to 1, with 1 indicating a perfect score.
+    Calculate the Peirce Skill Score (PSS) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+    
+    threshold : float
+        A threshold value used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     float
-        Peirce Skill Score (PSS).
+        The Peirce Skill Score (PSS), also known as the True Skill Statistic (TSS), which is calculated as:
+        PSS = TP / (TP + FN) - FP / (FP + TN)
+
+    Notes
+    -----
+    The Peirce Skill Score (PSS) is a metric used to measure the ability of a binary classifier to distinguish between positive and negative cases. 
+    PSS is particularly useful in evaluating model performance on imbalanced datasets, as it is unaffected by the proportion of positive and negative cases.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `np.array`, or `pd.DataFrame`, 
+    the function will calculate the PSS for each pair of elements in the lists and then return the average PSS.
     """
     cm = confusion_matrix(observed, output, threshold)
     POD = cm[0, 0] / (cm[0, 0] + cm[0, 1])
     POFD = cm[1, 0] / (cm[1, 0] + cm[1, 1])
     return POD - POFD
 
-def sedi(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-         output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def sedi(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+         output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
          threshold:float) -> float:
     """
-    Calculate the Symmetric Extremal Dependence Index (SEDI).
-
-    SEDI measures the skill of a forecast in discriminating between events and non-events, particularly at 
-    the extremes of the distribution. It ranges from -∞ to 1, with 1 being a perfect score.
+    Calculate the Symmetric Extremal Dependence Index (SEDI) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+    
+    threshold : float
+        A threshold value used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     float
-        Symmetric Extremal Dependence Index (SEDI).
+        The Symmetric Extremal Dependence Index (SEDI), calculated as:
+        SEDI = (log(FP / (FP + TN)) - log(TP / (TP + FN))) / (log(FP / (FP + TN)) + log(TP / (TP + FN)))
+
+    Notes
+    -----
+    The Symmetric Extremal Dependence Index (SEDI) is a metric used to evaluate the performance of a binary classifier, 
+    particularly in the context of rare events. It accounts for the balance between false positives and false negatives, 
+    providing a more nuanced assessment of model performance in extreme situations.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `xr.Dataset`, or `pd.DataFrame`, 
+    the function will calculate the SEDI for each pair of elements in the lists and then return the average SEDI.
     """
     cm = confusion_matrix(observed, output, threshold)
     H = cm[0, 0] / (cm[0, 0] + cm[0, 1])
@@ -580,26 +965,66 @@ def sedi(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.Dat
         return float('nan')  # Avoid division by zero and log(0)
     return (np.log(F) - np.log(H) - np.log(1 - F) + np.log(1 - H)) / (np.log(F) + np.log(H) + np.log(1 - F) + np.log(1 - H))
 
-def calculate_categorical_metrics(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                                  output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
+def calculate_categorical_metrics(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+                                  output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
                                   metrics: Union[str, Tuple[str], List[str]] = None,
                                   threshold: float = 0.5) -> dict:
     """
-    Calculate all defined categorical metrics and return them as a dictionary.
+    Calculate specified categorical metrics between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Observed values.
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
-        Model output values.
+    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+        Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
+
     metrics : Union[str, Tuple[str], List[str]], optional
-        Specific metric(s) to calculate, by default None. If None, all metrics are calculated.
+        A string, tuple, or list of strings specifying the categorical metrics to calculate. 
+        If not provided, all available metrics will be calculated. Available metrics are:
+        - "Confusion Matrix"
+        - "Precision"
+        - "Recall"
+        - "F1 Score"
+        - "Accuracy"
+        - "CSI" (Critical Success Index)
+        - "ETS" (Equitable Threat Score)
+        - "FAR" (False Alarm Ratio)
+        - "POD" (Probability of Detection)
+        - "GSS" (Gilbert Skill Score)
+        - "HSS" (Heidke Skill Score)
+        - "PSS" (Peirce Skill Score)
+        - "SEDI" (Symmetric Extremal Dependence Index)
+
+    threshold : float, optional
+        A threshold value used to convert continuous output values into binary classifications (0 or 1). 
+        Default is 0.5. Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
 
     Returns
     -------
     dict
-        Dictionary with calculated metric names and their values.
+        A dictionary where the keys are the names of the metrics and the values are the corresponding calculated values.
+
+    Notes
+    -----
+    This function allows for flexible calculation of multiple categorical metrics between observed and model output data. 
+    Users can specify one or more metrics, or calculate all available metrics by leaving the `metrics` parameter as `None`.
+
+    If the inputs `observed` and `output` are provided as lists of `xr.DataArray`, `xr.Dataset`, or `pd.DataFrame`, 
+    the function will calculate the specified metrics for each pair of elements in the lists and then return the average of these individual metrics.
+    
+    
+    Example
+    -------
+    >>> observed_data = np.array([0, 1, 0, 1, 0, 1])
+    >>> output_data = np.array([0.2, 0.8, 0.1, 0.6, 0.4, 0.9])
+    >>> calculate_categorical_metrics(observed_data, output_data, metrics=["Precision", "Recall", "F1 Score"], threshold=0.5)
+    {'Precision': 1.0, 'Recall': 1.0, 'F1 Score': 1.0}
+
+    In this example, `calculate_categorical_metrics` calculates the Precision, Recall, and F1 Score 
+    by comparing the observed values with the model output values, using a threshold of 0.5 to classify the output data.
+
     """
     available_metrics = {
         "Confusion Matrix": confusion_matrix,
@@ -655,7 +1080,7 @@ def fss_initialize(threshold: float, scale: int) -> dict:
 
 
 
-def fss_update(fss: dict, output: np.array, observed: np.array) -> None:
+def fss_update(fss: dict, observed: np.array, output: np.array) -> None:
     """
     Update the FSS object with new forecast and observed data.
     
@@ -715,20 +1140,52 @@ def fss_compute(fss: dict) -> float:
     return fss_value
 
 
-def calculate_fss_score(output:Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                   observed:Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                   threshold: Union[float, int, List[Union[float, int]]], scale:Union[float, int,  List[Union[float, int]]]) -> float:
+def calculate_fss_score(
+                   observed:Union[np.array, xr.DataArray, pd.DataFrame],
+                   output:Union[np.array, xr.DataArray, pd.DataFrame],
+                   threshold: Union[float, int, List[Union[float, int]]] , scale:Union[float, int,  List[Union[float, int]]]) -> float:
     """
-    Calculate the Fractions Skill Score (FSS) for the given forecast and observed data.
-    
-    Parameters:
-    output (Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]): Model output data.
-    observed (Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]): Observed data.
-    threshold (Union[float, int, List[Union[float, int]]]): Threshold value for binarizing the data.
-    scale (Union[float, int,  List[Union[float, int]]]): Size of the neighborhood for calculating fractions.
+    Calculate the Fractions Skill Score (FSS) between observed and model output values based on specified thresholds and scales.
 
-    Returns:
-    float: Fractions Skill Score (FSS) value.
+    Parameters
+    ----------
+    observed : Union[np.array, xr.DataArray, pd.DataFrame]
+        Array of shape (h, w) containing observed binary or continuous values, where h is the height, and w is the width.
+        
+    output : Union[np.array, xr.DataArray, pd.DataFrame]
+        Array of shape (h, w) containing model output binary or continuous values, where h is the height, and w is the width.
+
+    threshold : Union[float, int, List[Union[float, int]]]
+        A single threshold value or a list of threshold values used to convert continuous output values into binary classifications (0 or 1).
+        Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.
+
+    scale : Union[float, int, List[Union[float, int]]]
+        A single scale value or a list of scale values representing the neighborhood size for which the fractions are computed.
+        The scale is typically expressed in grid points or distance units.
+
+    Returns
+    -------
+    float
+        The Fractions Skill Score (FSS), which ranges from 0 to 1. An FSS of 1 indicates perfect agreement between the observed and forecast fractions, 
+        while an FSS of 0 indicates no skill.
+
+    Notes
+    -----
+    The Fractions Skill Score (FSS) is a metric used to assess the spatial accuracy of high-resolution forecasts, particularly in the context of precipitation. 
+    Unlike traditional categorical metrics, FSS considers the spatial distribution of the forecast and observed fields, making it well-suited for evaluating 
+    forecasts with spatial uncertainty.
+
+    If a list of thresholds or scales is provided, the function will calculate the FSS for each combination of threshold and scale and then return the average FSS.
+
+    Example
+    -------
+    >>> observed_data = np.random.rand(100, 100)
+    >>> output_data = np.random.rand(100, 100)
+    >>> calculate_fss_score(observed_data, output_data, threshold=0.5, scale=10)
+    0.85  # Example output, depends on the random values
+
+    In this example, the `calculate_fss_score` function calculates the FSS by comparing the observed values 
+    with the model output values, using a threshold of 0.5 and a scale of 10 grid points.
     """
     output = _to_numpy(output)
     observed = _to_numpy(observed)
@@ -886,7 +1343,7 @@ def calculate_psd(output: np.ndarray, observed: np.ndarray) -> float:
     return PSD
 
 
-def validate_with_psd(observed: np.ndarray, forecasted: np.ndarray) -> np.ndarray:
+def validate_with_psd(observed: np.ndarray, output: np.ndarray) -> np.ndarray:
     """
     Validate the forecasted data with the Precipitation Symmetry Distance (PSD).
     
@@ -898,10 +1355,10 @@ def validate_with_psd(observed: np.ndarray, forecasted: np.ndarray) -> np.ndarra
     np.ndarray: Array of PSD values.
     """
     psd_results = []
-    for i in tqdm(range(forecasted.shape[0]), desc="Calculating PSD"):
+    for i in tqdm(range(output.shape[0]), desc="Calculating PSD"):
         observed_slice = observed[i]
-        forecasted_slice = forecasted[i]
-        psd = calculate_psd(observed_slice, forecasted_slice)
+        output_slice = output[i]
+        psd = calculate_psd(observed_slice, output_slice)
         psd_results.append(psd)
     return np.array(psd_results)
 
