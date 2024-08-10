@@ -7,7 +7,7 @@ import sys
 path = '/home/lexi/WeatherValidation/WeatherValidation/'
 if path not in sys.path:
     sys.path.append(path)
-from duplexity.deterministic_score import *
+from duplexity.deterministic import *
 
 
 class TestDeterministicScore(unittest.TestCase):

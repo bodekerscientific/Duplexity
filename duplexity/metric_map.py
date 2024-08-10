@@ -4,7 +4,7 @@ import xarray as xr
 import pandas as pd
 import matplotlib.pyplot as plt
 from typing import Union
-from duplexity.deterministic_score import mean_absolute_error, mean_squared_error, bias, pearson_correlation, root_mean_squared_error
+from duplexity.deterministic import mean_absolute_error, mean_squared_error, bias, pearson_correlation, root_mean_squared_error
 from typing import Union, Callable, Dict, List, Tuple
 from duplexity.utils import _to_numpy, _check_shapes
 
