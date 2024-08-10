@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deterministic Metrics &mdash; Duplexity 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Duplexity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Duplexity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Deterministic Metrics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/metrics/determinstic.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="deterministic-metrics">
+<h1>Deterministic Metrics<a class="headerlink" href="#deterministic-metrics" title="Link to this heading"></a></h1>
+<p>Deterministic metrics are metrics that are calculated using the actual values
+of the target variable.</p>
+<section id="deterministic-score">
+<span id="module-duplexity.deterministic_score"></span><h2>Deterministic Score<a class="headerlink" href="#deterministic-score" title="Link to this heading"></a></h2>
+<p>Forecast evaluation and skill scores for deterministic continuous forecasts.</p>
+<section id="continuous-metrics">
+<h3>Continuous Metrics<a class="headerlink" href="#continuous-metrics" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#duplexity.deterministic_score.mean_absolute_error" title="duplexity.deterministic_score.mean_absolute_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean_absolute_error</span></code></a>(observed, output)</p></td>
+<td><p>Calculate the Mean Absolute Error (MAE) between observed and model output values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#duplexity.deterministic_score.mean_squared_error" title="duplexity.deterministic_score.mean_squared_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean_squared_error</span></code></a>(observed, output)</p></td>
+<td><p>Calculate the Mean Squared Error (MSE) between observed and model output values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#duplexity.deterministic_score.root_mean_squared_error" title="duplexity.deterministic_score.root_mean_squared_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_mean_squared_error</span></code></a>(observed, output)</p></td>
+<td><p>Calculate the Root Mean Squared Error (RMSE) between observed and model output values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#duplexity.deterministic_score.bias" title="duplexity.deterministic_score.bias"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bias</span></code></a>(observed, output)</p></td>
+<td><p>Calculate the bias between observed and model output values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#duplexity.deterministic_score.debiased_root_mean_squared_error" title="duplexity.deterministic_score.debiased_root_mean_squared_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">debiased_root_mean_squared_error</span></code></a>(observed, ...)</p></td>
+<td><p>Calculate the Debiased Root Mean Squared Error (DRMSE) between observed and model output values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#duplexity.deterministic_score.pearson_correlation" title="duplexity.deterministic_score.pearson_correlation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pearson_correlation</span></code></a>(observed, output)</p></td>
+<td><p>Calculate the Pearson correlation coefficient between observed and model output values.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="categorical-metrics">
+<h3>Categorical Metrics<a class="headerlink" href="#categorical-metrics" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#duplexity.deterministic_score.confusion_matrix" title="duplexity.deterministic_score.confusion_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confusion_matrix</span></code></a>(observed, output, threshold)</p></td>
+<td><p>Calculate the confusion matrix between observed and model output values based on a specified threshold.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#duplexity.deterministic_score.precision" title="duplexity.deterministic_score.precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">precision</span></code></a>(observed, output, threshold)</p></td>
+<td><p>Calculate the precision between observed and model output values based on a specified threshold.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#duplexity.deterministic_score.recall" title="duplexity.deterministic_score.recall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recall</span></code></a>(observed, output, threshold)</p></td>
+<td><p>Calculate the recall between observed and model output values based on a specified threshold.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#duplexity.deterministic_score.f1_score" title="duplexity.deterministic_score.f1_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f1_score</span></code></a>(observed, output, threshold)</p></td>
+<td><p>Calculate the F1 score between observed and model output values based on a specified threshold.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#duplexity.deterministic_score.accuracy" title="duplexity.deterministic_score.accuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">accuracy</span></code></a>(observed, output, threshold)</p></td>
+<td><p>Calculate the accuracy between observed and model output values based on a specified threshold.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#duplexity.deterministic_score.critical_success_index" title="duplexity.deterministic_score.critical_success_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">critical_success_index</span></code></a>(observed, output, ...)</p></td>
+<td><p>Calculate the Critical Success Index (CSI) between observed and model output values based on a specified threshold.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#duplexity.deterministic_score.equitable_threat_score" title="duplexity.deterministic_score.equitable_threat_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">equitable_threat_score</span></code></a>(observed, output, ...)</p></td>
+<td><p>Calculate the Equitable Threat Score (ETS) between observed and model output values based on a specified threshold.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#duplexity.deterministic_score.false_alarm_ratio" title="duplexity.deterministic_score.false_alarm_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">false_alarm_ratio</span></code></a>(observed, output, threshold)</p></td>
+<td><p>Calculate the False Alarm Ratio (FAR) between observed and model output values based on a specified threshold.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#duplexity.deterministic_score.probability_of_detection" title="duplexity.deterministic_score.probability_of_detection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">probability_of_detection</span></code></a>(observed, output, ...)</p></td>
+<td><p>Calculate the Probability of Detection (POD) between observed and model output values based on a specified threshold.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#duplexity.deterministic_score.gilbert_skill_score" title="duplexity.deterministic_score.gilbert_skill_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gilbert_skill_score</span></code></a>(observed, output, threshold)</p></td>
+<td><p>Calculate the Gilbert Skill Score (GSS) between observed and model output values based on a specified threshold.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#duplexity.deterministic_score.heidke_skill_score" title="duplexity.deterministic_score.heidke_skill_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heidke_skill_score</span></code></a>(observed, output, threshold)</p></td>
+<td><p>Calculate the Heidke Skill Score (HSS) between observed and model output values based on a specified threshold.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#duplexity.deterministic_score.peirce_skill_score" title="duplexity.deterministic_score.peirce_skill_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">peirce_skill_score</span></code></a>(observed, output, threshold)</p></td>
+<td><p>Calculate the Peirce Skill Score (PSS) between observed and model output values based on a specified threshold.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.accuracy">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.accuracy" title="Link to this definition"></a></dt>
+<dd><p>Calculate the accuracy between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The accuracy, which is the ratio of the number of correct predictions to the total number of predictions.
+Accuracy = (TP + TN) / (TP + TN + FP + FN)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Accuracy is a widely used metric in binary classification that measures the overall correctness of the model’s predictions.
+It is most useful when the classes are balanced; however, it can be misleading when dealing with imbalanced datasets.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the accuracy for each pair of elements in the lists and then return the average accuracy.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.bias">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">bias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#bias"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.bias" title="Link to this definition"></a></dt>
+<dd><p>Calculate the bias between observed and model output values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The bias, which is the average difference between the observed and model output values.
+Positive bias indicates overestimation by the model, while negative bias indicates underestimation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Bias is a simple but important metric that indicates the overall tendency of a model to overestimate or
+underestimate the observed values. It is often used in conjunction with other metrics like RMSE or MAE
+to provide a fuller picture of model performance.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the bias for each pair of elements in the lists and then return the average of these individual biases.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bias</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">)</span>
+<span class="go">-0.027  # Example output, depends on the random values</span>
+</pre></div>
+</div>
+<p>In this example, <cite>bias</cite> calculates the bias for each pair of <cite>xr.DataArray</cite> objects in <cite>observed_data</cite>
+and <cite>output_data</cite> and then averages these values to produce the final bias.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.calculate_categorical_metrics">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">calculate_categorical_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#calculate_categorical_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.calculate_categorical_metrics" title="Link to this definition"></a></dt>
+<dd><p>Calculate specified categorical metrics between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>metrics</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>]</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – A string, tuple, or list of strings specifying the categorical metrics to calculate.
+If not provided, all available metrics will be calculated. Available metrics are:
+- “Confusion Matrix”
+- “Precision”
+- “Recall”
+- “F1 Score”
+- “Accuracy”
+- “CSI” (Critical Success Index)
+- “ETS” (Equitable Threat Score)
+- “FAR” (False Alarm Ratio)
+- “POD” (Probability of Detection)
+- “GSS” (Gilbert Skill Score)
+- “HSS” (Heidke Skill Score)
+- “PSS” (Peirce Skill Score)
+- “SEDI” (Symmetric Extremal Dependence Index)</p></li>
+<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Default is 0.5. Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary where the keys are the names of the metrics and the values are the corresponding calculated values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function allows for flexible calculation of multiple categorical metrics between observed and model output data.
+Users can specify one or more metrics, or calculate all available metrics by leaving the <cite>metrics</cite> parameter as <cite>None</cite>.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>xr.Dataset</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the specified metrics for each pair of elements in the lists and then return the average of these individual metrics.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calculate_categorical_metrics</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Precision&quot;</span><span class="p">,</span> <span class="s2">&quot;Recall&quot;</span><span class="p">,</span> <span class="s2">&quot;F1 Score&quot;</span><span class="p">],</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="go">{&#39;Precision&#39;: 1.0, &#39;Recall&#39;: 1.0, &#39;F1 Score&#39;: 1.0}</span>
+</pre></div>
+</div>
+<p>In this example, <cite>calculate_categorical_metrics</cite> calculates the Precision, Recall, and F1 Score
+by comparing the observed values with the model output values, using a threshold of 0.5 to classify the output data.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.calculate_continuous_metrics">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">calculate_continuous_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#calculate_continuous_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.calculate_continuous_metrics" title="Link to this definition"></a></dt>
+<dd><p>Calculate specified continuous metrics between observed and model output values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>metrics</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>]</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – A string, tuple, or list of strings specifying the metrics to calculate.
+If not provided, all available metrics will be calculated. Available metrics are:
+- “MAE” (Mean Absolute Error)
+- “MSE” (Mean Squared Error)
+- “RMSE” (Root Mean Squared Error)
+- “Bias”
+- “DRMSE” (Debiased Root Mean Squared Error)
+- “Pearson Correlation”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary where the keys are the names of the metrics and the values are the corresponding calculated values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function allows for flexible calculation of multiple continuous metrics between observed and model output data.
+Users can specify one or more metrics, or calculate all available metrics by leaving the <cite>metrics</cite> parameter as <cite>None</cite>.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the specified metrics for each pair of elements in the lists and then return the average of these individual metrics.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calculate_continuous_metrics</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MAE&quot;</span><span class="p">,</span> <span class="s2">&quot;RMSE&quot;</span><span class="p">,</span> <span class="s2">&quot;Bias&quot;</span><span class="p">])</span>
+<span class="go">{&#39;MAE&#39;: 0.243, &#39;RMSE&#39;: 0.371, &#39;Bias&#39;: -0.015}  # Example output, depends on the random values</span>
+</pre></div>
+</div>
+<p>In this example, <cite>calculate_continuous_metrics</cite> calculates the Mean Absolute Error, Root Mean Squared Error,
+and Bias for each pair of <cite>xr.DataArray</cite> objects in <cite>observed_data</cite> and <cite>output_data</cite>, and returns the results as a dictionary.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.calculate_fss_score">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">calculate_fss_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#calculate_fss_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.calculate_fss_score" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Fractions Skill Score (FSS) between observed and model output values based on specified thresholds and scales.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – Array of shape (h, w) containing observed binary or continuous values, where h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – Array of shape (h, w) containing model output binary or continuous values, where h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>int</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>float</em><em>, </em><em>int</em><em>]</em><em>]</em><em>]</em>) – A single threshold value or a list of threshold values used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+<li><p><strong>scale</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>int</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>float</em><em>, </em><em>int</em><em>]</em><em>]</em><em>]</em>) – A single scale value or a list of scale values representing the neighborhood size for which the fractions are computed.
+The scale is typically expressed in grid points or distance units.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Fractions Skill Score (FSS), which ranges from 0 to 1. An FSS of 1 indicates perfect agreement between the observed and forecast fractions,
+while an FSS of 0 indicates no skill.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Fractions Skill Score (FSS) is a metric used to assess the spatial accuracy of high-resolution forecasts, particularly in the context of precipitation.
+Unlike traditional categorical metrics, FSS considers the spatial distribution of the forecast and observed fields, making it well-suited for evaluating
+forecasts with spatial uncertainty.</p>
+<p>If a list of thresholds or scales is provided, the function will calculate the FSS for each combination of threshold and scale and then return the average FSS.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calculate_fss_score</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">0.85  # Example output, depends on the random values</span>
+</pre></div>
+</div>
+<p>In this example, the <cite>calculate_fss_score</cite> function calculates the FSS by comparing the observed values
+with the model output values, using a threshold of 0.5 and a scale of 10 grid points.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.calculate_psd">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">calculate_psd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#calculate_psd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.calculate_psd" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.calculate_pss">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">calculate_pss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_smooth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observed_smooth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#calculate_pss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.calculate_pss" title="Link to this definition"></a></dt>
+<dd><p>Calculates the Precipitation Smooth Score (PSS).</p>
+<p>Parameters:
+output_smooth (np.array): Smoothed forecast data.
+observed_smooth (np.array): Smoothed observed data.
+radius (float): Radius for smoothing.
+Q (float): Quality factor.</p>
+<p>Returns:
+float: Precipitation Symmetry Score (PSS).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.circular_kernel">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">circular_kernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#circular_kernel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.circular_kernel" title="Link to this definition"></a></dt>
+<dd><p>Creates a circular kernel with the given radius.</p>
+<p>Parameters:
+radius (int): The radius of the circular kernel.</p>
+<p>Returns:
+np.array: A 2D array representing the circular kernel.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.compute_centred_coord_array">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">compute_centred_coord_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">array</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">array</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#compute_centred_coord_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.compute_centred_coord_array" title="Link to this definition"></a></dt>
+<dd><p>Compute a 2D coordinate array, where the origin is at the center.
+:param H: The height of the array.
+:type H: int
+:param W: The width of the array.
+:type W: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>out</strong> – The coordinate array.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">compute_centred_coord_array</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">(array([[-2],</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>[-1],</p>
+<p>[ 0],</p>
+<p>[ 1],</p>
+<p>[ 2]]), array([[-2, -1,  0,  1,  2]]))</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.confusion_matrix">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#confusion_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.confusion_matrix" title="Link to this definition"></a></dt>
+<dd><p>Calculate the confusion matrix between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A confusion matrix in the form of a 2x2 NumPy array, where:
+- The first row corresponds to the actual negative cases (True Negative, False Positive).
+- The second row corresponds to the actual positive cases (False Negative, True Positive).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The confusion matrix is a widely used tool for evaluating the performance of a classification model.
+It provides insights into the types of errors the model makes and can be used to derive other metrics like precision, recall, and F1-score.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the confusion matrix for each pair of elements in the lists and then return the average confusion matrix.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="go">array([[2, 1],</span>
+<span class="go">       [0, 3]])</span>
+</pre></div>
+</div>
+<p>In this example, the <cite>confusion_matrix</cite> function calculates the confusion matrix by comparing the observed values
+with the model output values, using a threshold of 0.5 to classify the output data.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.critical_success_index">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">critical_success_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#critical_success_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.critical_success_index" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Critical Success Index (CSI) between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Critical Success Index (CSI), which is the ratio of true positives to the sum of true positives, false negatives, and false positives.
+CSI = TP / (TP + FN + FP)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Critical Success Index (CSI), also known as the Threat Score, is a metric used in binary classification to measure
+the accuracy of positive predictions. Unlike accuracy, CSI accounts for both false positives and false negatives,
+making it particularly useful in assessing model performance in imbalanced datasets or for rare events.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the CSI for each pair of elements in the lists and then return the average CSI.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.debiased_root_mean_squared_error">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">debiased_root_mean_squared_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#debiased_root_mean_squared_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.debiased_root_mean_squared_error" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Debiased Root Mean Squared Error (DRMSE) between observed and model output values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Debiased Root Mean Squared Error (DRMSE), which is the square root of the mean squared error
+calculated after removing the bias between observed and predicted values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Debiased Root Mean Squared Error (DRMSE) adjusts for any systematic bias in the predictions
+by first removing the bias from the predictions and then calculating the root mean squared error.
+This metric provides a clearer indication of the model’s performance by focusing on the variability
+in the errors after accounting for bias.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the DRMSE for each pair of elements in the lists and then return the average of these individual DRMSEs.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">debiased_root_mean_squared_error</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">)</span>
+<span class="go">0.278  # Example output, depends on the random values</span>
+</pre></div>
+</div>
+<p>In this example, <cite>debiased_root_mean_squared_error</cite> calculates the DRMSE for each pair of <cite>xr.DataArray</cite> objects in <cite>observed_data</cite>
+and <cite>output_data</cite> and then averages these values to produce the final DRMSE.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.equitable_threat_score">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">equitable_threat_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#equitable_threat_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.equitable_threat_score" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Equitable Threat Score (ETS) between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Equitable Threat Score (ETS), which adjusts the Critical Success Index (CSI) by accounting for hits due to random chance.
+ETS = (TP - CH) / (TP + FN + FP - CH)
+where CH (Chance Hits) = (TP + FN) * (TP + FP) / (TP + FN + FP + TN)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Equitable Threat Score (ETS) is a metric used in binary classification to measure the skill of a model in predicting positive events,
+adjusted for the number of hits that could occur by random chance. ETS is particularly useful in scenarios involving rare events or imbalanced datasets,
+as it provides a more accurate assessment of model performance than the Critical Success Index (CSI) alone.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the ETS for each pair of elements in the lists and then return the average ETS.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.f1_score">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">f1_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#f1_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.f1_score" title="Link to this definition"></a></dt>
+<dd><p>Calculate the F1 score between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The F1 score, which is the harmonic mean of precision and recall.
+F1 Score = 2 * (Precision * Recall) / (Precision + Recall)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The F1 score is a widely used metric in binary classification that balances precision and recall, making it
+particularly useful in scenarios where the distribution of classes is imbalanced or where both false positives
+and false negatives need to be considered.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the F1 score for each pair of elements in the lists and then return the average F1 score.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f1_score</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+<p>In this example, the <cite>f1_score</cite> function calculates the F1 score by first computing the precision and recall using the
+specified threshold, and then calculating the harmonic mean of these two metrics.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.false_alarm_ratio">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">false_alarm_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#false_alarm_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.false_alarm_ratio" title="Link to this definition"></a></dt>
+<dd><p>Calculate the False Alarm Ratio (FAR) between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The False Alarm Ratio (FAR), which is the ratio of false positives to the sum of false positives and true positives.
+FAR = FP / (FP + TP)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The False Alarm Ratio (FAR) is a metric used in binary classification to measure the proportion of positive predictions that are incorrect.
+It is particularly important in scenarios where false positives are costly or problematic. FAR ranges from 0 to 1, with 0 indicating no false alarms
+and 1 indicating that all positive predictions are false.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the FAR for each pair of elements in the lists and then return the average FAR.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.fss_compute">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">fss_compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#fss_compute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.fss_compute" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Fractions Skill Score (FSS).</p>
+<p>Parameters:
+fss (dict): FSS verification object.</p>
+<p>Returns:
+float: Fractions Skill Score.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.fss_initialize">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">fss_initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#fss_initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.fss_initialize" title="Link to this definition"></a></dt>
+<dd><p>Initialize a fractions skill score (FSS) object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>threshold</strong> (<em>float</em>) – The intensity threshold value for binarizing the data.</p></li>
+<li><p><strong>scale</strong> (<em>int</em>) – Size of the neighborhood for calculating fractions, in pixels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FSS verification object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.fss_update">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">fss_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#fss_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.fss_update" title="Link to this definition"></a></dt>
+<dd><p>Update the FSS object with new forecast and observed data.</p>
+<p>Parameters:
+fss (dict):</p>
+<blockquote>
+<div><p>FSS verification object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>output (np.array):</dt><dd><p>Model output data array in shape (height, width).</p>
+</dd>
+<dt>observed (np.array):</dt><dd><p>Observed data array in shape (height, width).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.gilbert_skill_score">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">gilbert_skill_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#gilbert_skill_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.gilbert_skill_score" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Gilbert Skill Score (GSS) between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Gilbert Skill Score (GSS), also known as the Equitable Threat Score (ETS), which adjusts the Critical Success Index (CSI)
+by accounting for hits that could occur due to random chance.
+GSS = (TP - CH) / (TP + FN + FP - CH)
+where CH (Chance Hits) = (TP + FN) * (TP + FP) / (TP + FN + FP + TN)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Gilbert Skill Score (GSS) is a metric used in binary classification to assess the skill of a model by considering
+both correct predictions and the impact of random chance. It is particularly useful in cases involving rare events
+or imbalanced datasets, where traditional metrics like accuracy may be misleading.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the GSS for each pair of elements in the lists and then return the average GSS.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.heidke_skill_score">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">heidke_skill_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#heidke_skill_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.heidke_skill_score" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Heidke Skill Score (HSS) between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Heidke Skill Score (HSS), which measures the skill of a binary classification model compared to random chance.
+HSS = 2 * (TP * TN - FP * FN) / ((TP + FN) * (FN + TN) + (TP + FP) * (FP + TN))</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Heidke Skill Score (HSS) is a metric used to assess the accuracy of a model’s predictions relative to random chance.
+Unlike some other metrics, HSS considers all elements of the confusion matrix (TP, TN, FP, FN) and is particularly useful
+when the goal is to compare model performance against a baseline of random prediction. HSS ranges from -1 to 1,
+where 1 indicates perfect skill, 0 indicates no skill, and negative values indicate worse-than-random performance.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the HSS for each pair of elements in the lists and then return the average HSS.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.mean_absolute_error">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">mean_absolute_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#mean_absolute_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.mean_absolute_error" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Mean Absolute Error (MAE) between observed and model output values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Mean Absolute Error (MAE), which measures the average magnitude of the absolute errors
+between observed and predicted values. MAE provides a linear score that does not consider the direction of errors.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The MAE is a widely used metric in regression analysis and is particularly useful for evaluating model performance
+where all errors are weighted equally.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the MAE for each pair of elements in the lists and then return the average of these individual MAEs.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">)</span>
+<span class="go">0.337  # Example output, depends on the random values</span>
+</pre></div>
+</div>
+<p>In this example, <cite>mean_absolute_error</cite> calculates the MAE for each pair of <cite>xr.DataArray</cite> objects in <cite>observed_data</cite>
+and <cite>output_data</cite> and then averages these values to produce the final MAE.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.mean_squared_error">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">mean_squared_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#mean_squared_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.mean_squared_error" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Mean Squared Error (MSE) between observed and model output values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Mean Squared Error (MSE), which measures the average squared difference between observed and predicted values.
+MSE is a quadratic scoring rule that penalizes larger errors more than smaller ones.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The MSE is a common metric in regression analysis, used to measure the accuracy of a model.
+Unlike MAE, it gives more weight to larger errors due to the squaring of differences.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the MSE for each pair of elements in the lists and then return the average of these individual MSEs.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">)</span>
+<span class="go">0.112  # Example output, depends on the random values</span>
+</pre></div>
+</div>
+<p>In this example, <cite>mean_squared_error</cite> calculates the MSE for each pair of <cite>xr.DataArray</cite> objects in <cite>observed_data</cite>
+and <cite>output_data</cite> and then averages these values to produce the final MSE.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.pearson_correlation">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">pearson_correlation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#pearson_correlation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.pearson_correlation" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Pearson correlation coefficient between observed and model output values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Pearson correlation coefficient, a measure of the linear relationship between the observed and model output values.
+The coefficient ranges from -1 to 1, where 1 indicates a perfect positive linear relationship, -1 indicates a perfect negative
+linear relationship, and 0 indicates no linear relationship.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Pearson correlation coefficient is a widely used statistical measure to assess the strength and direction
+of the linear relationship between two variables. A high absolute value of the coefficient indicates a strong linear relationship.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the Pearson correlation for each pair of elements in the lists and then return the average of these individual coefficients.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pearson_correlation</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">)</span>
+<span class="go">0.756  # Example output, depends on the random values</span>
+</pre></div>
+</div>
+<p>In this example, <cite>pearson_correlation</cite> calculates the Pearson correlation coefficient for each pair of <cite>xr.DataArray</cite> objects in <cite>observed_data</cite>
+and <cite>output_data</cite> and then averages these values to produce the final coefficient.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.peirce_skill_score">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">peirce_skill_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#peirce_skill_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.peirce_skill_score" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Peirce Skill Score (PSS) between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Peirce Skill Score (PSS), also known as the True Skill Statistic (TSS), which is calculated as:
+PSS = TP / (TP + FN) - FP / (FP + TN)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Peirce Skill Score (PSS) is a metric used to measure the ability of a binary classifier to distinguish between positive and negative cases.
+PSS is particularly useful in evaluating model performance on imbalanced datasets, as it is unaffected by the proportion of positive and negative cases.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the PSS for each pair of elements in the lists and then return the average PSS.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.precision">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">precision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#precision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.precision" title="Link to this definition"></a></dt>
+<dd><p>Calculate the precision between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The precision, which is the ratio of true positives to the sum of true positives and false positives.
+Precision = TP / (TP + FP)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Precision is a key metric in binary classification that measures the accuracy of the positive predictions made by the model.
+It is particularly useful in situations where the cost of false positives is high.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the precision for each pair of elements in the lists and then return the average precision.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">precision</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+<p>In this example, the <cite>precision</cite> function calculates the precision by comparing the observed values
+with the model output values, using a threshold of 0.5 to classify the output data.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.probability_of_detection">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">probability_of_detection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#probability_of_detection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.probability_of_detection" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Probability of Detection (POD) between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Probability of Detection (POD), which is the ratio of true positives to the sum of true positives and false negatives.
+POD = TP / (TP + FN)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Probability of Detection (POD), also known as sensitivity or the true positive rate, is a key metric in binary classification
+that measures the ability of the model to correctly identify positive cases. A POD of 1 indicates perfect detection of all positive cases,
+while a POD of 0 indicates that no positive cases were detected.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the POD for each pair of elements in the lists and then return the average POD.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.rapsd">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">rapsd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fft_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">fft_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#rapsd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.rapsd" title="Link to this definition"></a></dt>
+<dd><p>Compute radially averaged power spectral density (RAPSD) from the given
+2D input field.
+:param field: A 2d array of shape (m, n) containing the input field.
+:type field: array_like
+:param fft_method: A module or object implementing the same methods as numpy.fft and</p>
+<blockquote>
+<div><p>scipy.fftpack. If set to None, field is assumed to represent the
+shifted discrete Fourier transform of the input field, where the
+origin is at the center of the array
+(see numpy.fft.fftshift or scipy.fftpack.fftshift).</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>return_freq</strong> (<em>bool</em>) – Whether to also return the Fourier frequencies.</p></li>
+<li><p><strong>d</strong> (<em>scalar</em>) – Sample spacing (inverse of the sampling rate). Defaults to 1.
+Applicable if return_freq is ‘True’.</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em>) – If True, normalize the power spectrum so that it sums to one.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>out</strong> (<em>ndarray</em>) – One-dimensional array containing the RAPSD. The length of the array is
+int(l/2) (if l is even) or int(l/2)+1 (if l is odd), where l=max(m,n).</p></li>
+<li><p><strong>freq</strong> (<em>ndarray</em>) – One-dimensional array containing the Fourier frequencies.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p><a href="#id1"><span class="problematic" id="id2">:cite:`RC2011`</span></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.recall">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">recall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#recall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.recall" title="Link to this definition"></a></dt>
+<dd><p>Calculate the recall between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The recall, which is the ratio of true positives to the sum of true positives and false negatives.
+Recall = TP / (TP + FN)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Recall, also known as sensitivity or true positive rate, is a key metric in binary classification that measures
+the model’s ability to correctly identify all positive instances. It is particularly important in scenarios where
+minimizing false negatives is crucial.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the recall for each pair of elements in the lists and then return the average recall.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">recall</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+<p>In this example, the <cite>recall</cite> function calculates the recall by comparing the observed values
+with the model output values, using a threshold of 0.5 to classify the output data.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.root_mean_squared_error">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">root_mean_squared_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#root_mean_squared_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.root_mean_squared_error" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Root Mean Squared Error (RMSE) between observed and model output values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Root Mean Squared Error (RMSE), which is the square root of the average squared differences
+between observed and predicted values. RMSE is sensitive to large errors and is often used to assess the accuracy of a model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>RMSE is a commonly used metric in regression analysis that provides an overall measure of the error magnitude.
+It is particularly useful when comparing different models or algorithms, as it combines the advantages of both
+the mean absolute error (MAE) and the mean squared error (MSE).</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>np.array</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the RMSE for each pair of elements in the lists and then return the average of these individual RMSEs.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">root_mean_squared_error</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">output_data</span><span class="p">)</span>
+<span class="go">0.355  # Example output, depends on the random values</span>
+</pre></div>
+</div>
+<p>In this example, <cite>root_mean_squared_error</cite> calculates the RMSE for each pair of <cite>xr.DataArray</cite> objects in <cite>observed_data</cite>
+and <cite>output_data</cite> and then averages these values to produce the final RMSE.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.sedi">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">sedi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">DataArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#sedi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.sedi" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Symmetric Extremal Dependence Index (SEDI) between observed and model output values based on a specified threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>output</strong> (<em>Union</em><em>[</em><em>np.array</em><em>, </em><em>xr.DataArray</em><em>, </em><em>pd.DataFrame</em><em>, </em><em>List</em><em>[</em><em>Union</em><em>[</em><em>xr.DataArray</em><em>, </em><em>np.array</em><em>, </em><em>pd.DataFrame</em><em>]</em><em>]</em><em>]</em>) – Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – A threshold value used to convert continuous output values into binary classifications (0 or 1).
+Values greater than or equal to the threshold will be classified as 1, and values below the threshold will be classified as 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Symmetric Extremal Dependence Index (SEDI), calculated as:
+SEDI = (log(FP / (FP + TN)) - log(TP / (TP + FN))) / (log(FP / (FP + TN)) + log(TP / (TP + FN)))</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Symmetric Extremal Dependence Index (SEDI) is a metric used to evaluate the performance of a binary classifier,
+particularly in the context of rare events. It accounts for the balance between false positives and false negatives,
+providing a more nuanced assessment of model performance in extreme situations.</p>
+<p>If the inputs <cite>observed</cite> and <cite>output</cite> are provided as lists of <cite>xr.DataArray</cite>, <cite>xr.Dataset</cite>, or <cite>pd.DataFrame</cite>,
+the function will calculate the SEDI for each pair of elements in the lists and then return the average SEDI.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="duplexity.deterministic_score.validate_with_psd">
+<span class="sig-prename descclassname"><span class="pre">duplexity.deterministic_score.</span></span><span class="sig-name descname"><span class="pre">validate_with_psd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/duplexity/deterministic_score.html#validate_with_psd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#duplexity.deterministic_score.validate_with_psd" title="Link to this definition"></a></dt>
+<dd><p>Validate the forecasted data with the Precipitation Symmetry Distance (PSD).</p>
+<p>Parameters:
+observed (np.ndarray): Observed data array.
+forecasted (np.ndarray): Forecasted data array.</p>
+<p>Returns:
+np.ndarray: Array of PSD values.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Lexi Xu, Emily O&#39;Riordan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

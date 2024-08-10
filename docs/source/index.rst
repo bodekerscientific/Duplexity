@@ -20,8 +20,8 @@ range of metrics for comparing data sets
    :maxdepth: 1
    :caption: Contents:
 
-   Installation<installation>
-   Deterministic Metrics<deterministic>
+   Installation <installation>
+   Metrics <metrics/metrics>
 
 
 

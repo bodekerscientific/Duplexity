@@ -6,5 +6,7 @@ understanding how well a model is performing.
 
 
 .. automodule:: duplexity.deterministic_score
-.. autofunction:: duplexity.probabilistic_score
 
+.. toctree::
+    :maxdepth: 2
+    Deterministic Metrics <deterministic>

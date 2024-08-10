@@ -15,12 +15,13 @@ Installation instructions
 Prerequisites
 -------------
 Ensure you have the following prerequisites installed on your system:
-* `Python (version 3.7 or later) <http://www.python.org/>`_ (lower versions may work but are not tested).
-* Git
-* `numpy <http://www.numpy.org/>`_
-* `pandas <http://pandas.pydata.org/>`_
-* `Xarray <http://xarray.pydata.org/en/stable/>`_
-* `matplotlib <http://matplotlib.org/>`_
+
+- `Python (version 3.7 or later) <http://www.python.org/>`_ (lower versions may work but are not tested).
+- `numpy <http://www.numpy.org/>`_
+- `pandas <http://pandas.pydata.org/>`_
+- `Xarray <http://xarray.pydata.org/en/stable/>`_
+- `matplotlib <http://matplotlib.org/>`_
+- `Git <http://git-scm.com/>`_ (optional, but recommended for cloning the repository)
 
 
 
@@ -55,6 +56,7 @@ Create and/or activate the `conda` or `pip` environment you would like to use Du
 Install Duplexity
 ~~~~~~~~~~~~~~~~~
 Ensure you are in the highest level of the Duplexity directory on your local system:
+
 .. code-block:: console
 
     cd duplexity

@@ -15,8 +15,15 @@ Installation instructions
 Prerequisites
 -------------
 Ensure you have the following prerequisites installed on your system:
-* Python (version 3.7 or later)
+* `Python (version 3.7 or later) <http://www.python.org/>`_ (lower versions may work but are not tested).
 * Git
+* `numpy <http://www.numpy.org/>`_
+* `pandas <http://pandas.pydata.org/>`_
+* `Xarray <http://xarray.pydata.org/en/stable/>`_
+* `matplotlib <http://matplotlib.org/>`_
+
+
+
 
 
 Install Duplexity from `source <https://github.com/lexixu19/Duplexity>`_
