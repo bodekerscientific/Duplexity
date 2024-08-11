@@ -5,7 +5,7 @@ Metrics for evaluating the performance of machine learning models are essential 
 understanding how well a model is performing. 
 
 
-.. automodule:: duplexity.deterministic_score
+.. automodule:: duplexity.deterministic
 
 .. toctree::
     :maxdepth: 2
