@@ -4,7 +4,7 @@ Duplexity is a Python package that calculates validation metrics on meteorologic
 
 ## Installation
 
-We have not yet made Duplexity pip-installable, as the project is still in the early development stages. This means the code is constantly changing, and we currently don't guarantee backwards compatibility when changes are made. Once a stable release of Duplexity is available, we will upload Duplexity to PyPI to make it pip-installable. 
+We have not yet made Duplexity pip-installable, as the project is still in the early development stages. This means the code is constantly changing, and we currently don't guarantee backwards compatibility when changes are made. Once a stable release of Duplexity is available, we will upload Duplexity to PyPI to make it pip-installable.
 
 ### Follow these steps to install Duplexity:
 
