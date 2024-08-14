@@ -16,6 +16,7 @@ Continuous Metrics
     bias
     debiased_root_mean_squared_error
     pearson_correlation
+    fss_score
 
 Categorical Metrics
 -------------------
@@ -66,17 +67,29 @@ all_continuous_metrics = [
     "Pearson Correlation" # Pearson Correlation
 ]
 
-def mean_absolute_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                        output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]) -> float:
+def mean_absolute_error(observed: Union[
+                     np.ndarray, 
+                     xr.DataArray, 
+                     xr.Dataset,  
+                     pd.DataFrame, 
+                     List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]
+                     ],
+                        output: Union[
+                     np.ndarray, 
+                     xr.DataArray, 
+                     xr.Dataset,  
+                     pd.DataFrame, 
+                     List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]
+                     ]) -> float:
     """
     Calculate the Mean Absolute Error (MAE) between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
 
     Returns
@@ -108,17 +121,17 @@ def mean_absolute_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, Li
     _check_shapes(observed, output)
     return np.mean(np.abs(observed - output))
 
-def mean_squared_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                       output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]) -> float:
+def mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                       output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
     """
     Calculate the Mean Squared Error (MSE) between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
 
     Returns
@@ -152,17 +165,17 @@ def mean_squared_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, Lis
 
     return np.mean((observed - output) ** 2)
 
-def root_mean_squared_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                            output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]) -> float:
+def root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                            output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
     """
     Calculate the Root Mean Squared Error (RMSE) between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
 
     Returns
@@ -196,17 +209,17 @@ def root_mean_squared_error(observed: Union[np.array, xr.DataArray, pd.DataFrame
 
     return np.sqrt(np.mean((observed - output) ** 2))
 
-def bias(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-         output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]) -> float:
+def bias(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+         output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
     """
     Calculate the bias between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
 
     Returns
@@ -240,17 +253,17 @@ def bias(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.Dat
 
     return np.mean(output - observed)
 
-def debiased_root_mean_squared_error(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                                     output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]) -> float:
+def debiased_root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                                     output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
     """
     Calculate the Debiased Root Mean Squared Error (DRMSE) between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
 
     Returns
@@ -287,17 +300,17 @@ def debiased_root_mean_squared_error(observed: Union[np.array, xr.DataArray, pd.
     debiased_predictions = output - bias_value
     return np.sqrt(np.mean((observed - debiased_predictions) ** 2))
 
-def pearson_correlation(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                        output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]) -> float:
+def pearson_correlation(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                        output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
     """
     Calculate the Pearson correlation coefficient between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
 
     Returns
@@ -331,18 +344,18 @@ def pearson_correlation(observed: Union[np.array, xr.DataArray, pd.DataFrame, Li
 
     return np.corrcoef(observed.flatten(), output.flatten())[0, 1]
 
-def calculate_continuous_metrics(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                                 output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def calculate_continuous_metrics(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                                 output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                                  metrics: Union[str, Tuple[str], List[str]] = None) -> dict:
     """
     Calculate specified continuous metrics between observed and model output values.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output values, where n is the number of samples, h is the height, and w is the width.
 
     metrics : Union[str, Tuple[str], List[str]], optional
@@ -420,18 +433,18 @@ all_categorical_metrics = [
     "SEDI"
 ]
 
-def confusion_matrix(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                     output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def confusion_matrix(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                     output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                      threshold:float) -> np.array:
     """
     Calculate the confusion matrix between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
     
     threshold : float
@@ -478,18 +491,18 @@ def confusion_matrix(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[
     
     return np.array([[TP.sum(), FN.sum()], [FP.sum(), TN.sum()]])
 
-def precision(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-              output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def precision(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+              output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
               threshold:float) -> float:
     """
     Calculate the precision between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
     
     threshold : float
@@ -523,18 +536,18 @@ def precision(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[x
     cm = confusion_matrix(observed, output, threshold)
     return cm[0, 0] / (cm[0, 0] + cm[1, 0])
 
-def recall(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-           output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def recall(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+           output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
            threshold:float) -> float:
     """
     Calculate the recall between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
     
     threshold : float
@@ -570,18 +583,18 @@ def recall(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.D
     cm = confusion_matrix(observed, output, threshold)
     return cm[0, 0] / (cm[0, 0] + cm[0, 1])
 
-def f1_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-             output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def f1_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+             output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
              threshold:float) -> float:
     """
     Calculate the F1 score between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
     
     threshold : float
@@ -618,18 +631,18 @@ def f1_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr
     recall_value = recall(observed, output, threshold)
     return 2 * (precision_value * recall_value) / (precision_value + recall_value)
 
-def accuracy(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-             output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def accuracy(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+             output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
              threshold:float) -> float:
     """
     Calculate the accuracy between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
     
     threshold : float
@@ -654,18 +667,18 @@ def accuracy(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr
     cm = confusion_matrix(observed, output, threshold)
     return (cm[0, 0] + cm[1, 1]) / cm.sum()
 
-def critical_success_index(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                           output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def critical_success_index(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                           output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                            threshold:float) -> float:
     """
     Calculate the Critical Success Index (CSI) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
     
     threshold : float
@@ -691,18 +704,18 @@ def critical_success_index(observed: Union[np.array, xr.DataArray, pd.DataFrame,
     cm = confusion_matrix(observed, output, threshold)
     return cm[0, 0] / (cm[0, 0] + cm[0, 1] + cm[1, 0])
 
-def equitable_threat_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                           output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def equitable_threat_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                           output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                            threshold:float) -> float:
     """
     Calculate the Equitable Threat Score (ETS) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
     
     threshold : float
@@ -729,18 +742,18 @@ def equitable_threat_score(observed: Union[np.array, xr.DataArray, pd.DataFrame,
     hits_random = (cm[0, 0] + cm[1, 0]) * (cm[0, 0] + cm[0, 1]) / cm.sum()
     return (cm[0, 0] - hits_random) / (cm[0, 0] + cm[0, 1] + cm[1, 0] - hits_random)
 
-def false_alarm_ratio(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                      output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def false_alarm_ratio(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                      output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                       threshold:float) -> float:
     """
     Calculate the False Alarm Ratio (FAR) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
     
     threshold : float
@@ -767,18 +780,18 @@ def false_alarm_ratio(observed: Union[np.array, xr.DataArray, pd.DataFrame, List
     return cm[1, 0] / (cm[0, 0] + cm[1, 0])
 
 
-def probability_of_detection(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                             output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def probability_of_detection(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                             output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                              threshold:float) -> float:
     """
     Calculate the Probability of Detection (POD) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
     
     threshold : float
@@ -805,18 +818,18 @@ def probability_of_detection(observed: Union[np.array, xr.DataArray, pd.DataFram
     cm = confusion_matrix(observed, output, threshold)
     return cm[0, 0] / (cm[0, 0] + cm[0, 1])
 
-def gilbert_skill_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                        output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def gilbert_skill_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                        output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                         threshold:float) -> float:
     """
     Calculate the Gilbert Skill Score (GSS) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
     
     threshold : float
@@ -844,18 +857,18 @@ def gilbert_skill_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, Li
     hits_random = (cm[0, 0] + cm[1, 0]) * (cm[0, 0] + cm[0, 1]) / cm.sum()
     return (cm[0, 0] - hits_random) / (cm[0, 0] + cm[0, 1] + cm[1, 0] - hits_random)
 
-def heidke_skill_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                       output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def heidke_skill_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                       output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                        threshold:float) -> float:
     """
     Calculate the Heidke Skill Score (HSS) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
     
     threshold : float
@@ -888,18 +901,18 @@ def heidke_skill_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, Lis
     accuracy_observed = (hits + correct_negatives) / total
     return (accuracy_observed - accuracy_random) / (1 - accuracy_random) if (1 - accuracy_random) != 0 else 0
 
-def peirce_skill_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                       output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def peirce_skill_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                       output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                        threshold:float) -> float:
     """
     Calculate the Peirce Skill Score (PSS) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
     
     threshold : float
@@ -925,18 +938,18 @@ def peirce_skill_score(observed: Union[np.array, xr.DataArray, pd.DataFrame, Lis
     POFD = cm[1, 0] / (cm[1, 0] + cm[1, 1])
     return POD - POFD
 
-def sedi(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-         output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def sedi(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+         output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
          threshold:float) -> float:
     """
     Calculate the Symmetric Extremal Dependence Index (SEDI) between observed and model output values based on a specified threshold.
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
     
     threshold : float
@@ -965,8 +978,8 @@ def sedi(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.Dat
         return float('nan')  # Avoid division by zero and log(0)
     return (np.log(F) - np.log(H) - np.log(1 - F) + np.log(1 - H)) / (np.log(F) + np.log(H) + np.log(1 - F) + np.log(1 - H))
 
-def calculate_categorical_metrics(observed: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
-                                  output: Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]],
+def calculate_categorical_metrics(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                                  output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                                   metrics: Union[str, Tuple[str], List[str]] = None,
                                   threshold: float = 0.5) -> dict:
     """
@@ -974,10 +987,10 @@ def calculate_categorical_metrics(observed: Union[np.array, xr.DataArray, pd.Dat
 
     Parameters
     ----------
-    observed : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    observed : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing observed binary or continuous values, where n is the number of samples, h is the height, and w is the width.
         
-    output : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, np.array, pd.DataFrame]]]
+    output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values, where n is the number of samples, h is the height, and w is the width.
 
     metrics : Union[str, Tuple[str], List[str]], optional
@@ -1140,10 +1153,11 @@ def fss_compute(fss: dict) -> float:
     return fss_value
 
 
-def calculate_fss_score(
-                   observed:Union[np.array, xr.DataArray, pd.DataFrame],
-                   output:Union[np.array, xr.DataArray, pd.DataFrame],
-                   threshold: Union[float, int, List[Union[float, int]]] , scale:Union[float, int,  List[Union[float, int]]]) -> float:
+def fss_score(
+              observed:Union[np.array, xr.DataArray, pd.DataFrame],
+              output:Union[np.array, xr.DataArray, pd.DataFrame],
+              threshold: Union[float, int, List[Union[float, int]]] , scale:Union[float, int,  List[Union[float, int]]]
+              ) -> float:
     """
     Calculate the Fractions Skill Score (FSS) between observed and model output values based on specified thresholds and scales.
 

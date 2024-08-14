@@ -4,36 +4,48 @@ import pandas as pd
 from typing import List, Tuple, Union, Optional
 
 
-def _to_numpy(data:Union[
-                     np.array, 
+def _to_numpy(data: Union[
+                     np.ndarray, 
                      xr.DataArray, 
+                     xr.Dataset,  
                      pd.DataFrame, 
-                     List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]
-                     ]) -> np.array:
+                     List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]
+                     ], var: str = None) -> np.ndarray:  # Corrected return type
     """
-    Convert input data to numpy array.
+    Convert input data to a numpy array.
     
     Parameters
     ----------
-    data : Union[np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]]
+    data : Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]
         Input data to be converted.
+    var : str, optional
+        The variable name to extract from an xr.Dataset. Only used if data is an xr.Dataset.
         
     Returns
     -------
-    np.array
+    np.ndarray
         Converted numpy array.
     """
     if isinstance(data, xr.DataArray):
         return data.to_numpy()
+    elif isinstance(data, xr.Dataset):
+        if var:
+            if var in data:
+                return data[var].to_numpy()
+            else:
+                raise ValueError(f"Variable '{var}' not found in the dataset.")
+        else:
+            raise ValueError("No variable specified for xr.Dataset. Please specify a variable to convert.")
     elif isinstance(data, pd.DataFrame):
         return data.values
     elif isinstance(data, list):
-        return np.array([d.to_numpy() if isinstance(d, xr.DataArray) else d.values for d in data])
+        return np.array([_to_numpy(d, var=var) if isinstance(d, (xr.DataArray, xr.Dataset)) else d.values for d in data])
     elif isinstance(data, np.ndarray):
         return data
     else:
-        raise ValueError(f"Unsupported data type: {type(data)}. Supported data types are: np.array, xr.DataArray, pd.DataFrame, List[Union[xr.DataArray, xr.Dataset, pd.DataFrame]]")
-    
+        raise ValueError(f"Unsupported data type: {type(data)}. Supported data types are: np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]")
+
+
 
     
 
@@ -51,6 +63,7 @@ def _check_shapes(observed, output):
         raise ValueError("Observed and output data must have the same shape.")
     
 
+
 def _check_binary_data(data: np.array) -> bool:
     """
     Check if the given numpy array contains only binary data (0s and 1s).
@@ -66,6 +79,8 @@ def _check_binary_data(data: np.array) -> bool:
     if not np.all((data == 0) | (data == 1)):
         raise ValueError("Input data must contain only binary values (0s and 1s).")
 
+
+
 def _check_2d_data(data: np.array) -> bool:
     """
     Check if the given numpy array is 2D.
@@ -78,6 +93,8 @@ def _check_2d_data(data: np.array) -> bool:
     """
     if len(data.shape) != 2:
         raise ValueError("Input data must be 2D.")
+
+
 
 def _binary_classification(data: np.array, threshold: float) -> np.array:
     """
