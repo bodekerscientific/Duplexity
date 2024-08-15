@@ -80,7 +80,8 @@ def mean_absolute_error(observed: Union[
                      xr.Dataset,  
                      pd.DataFrame, 
                      List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]
-                     ]) -> float:
+                     ],
+                     var: str = None) -> float:
     """
     Calculate the Mean Absolute Error (MAE) between observed and model output values.
 
@@ -116,13 +117,16 @@ def mean_absolute_error(observed: Union[
     In this example, `mean_absolute_error` calculates the MAE for each pair of `xr.DataArray` objects in `observed_data` 
     and `output_data` and then averages these values to produce the final MAE.
     """
-    observed = _to_numpy(observed)
-    output = _to_numpy(output)
+    observed = _to_numpy(observed, var)
+
+    output = _to_numpy(output, var)
+
     _check_shapes(observed, output)
     return np.mean(np.abs(observed - output))
 
 def mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                       output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
+                       output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
+                       var: str = None) -> float:
     """
     Calculate the Mean Squared Error (MSE) between observed and model output values.
 
@@ -159,14 +163,16 @@ def mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd
     and `output_data` and then averages these values to produce the final MSE.
     """
 
-    observed = _to_numpy(observed)
-    output = _to_numpy(output)
+    observed = _to_numpy(observed, var)
+
+    output = _to_numpy(output, var)
+
     _check_shapes(observed, output)
 
     return np.mean((observed - output) ** 2)
 
 def root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                            output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
+                            output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],var: str = None) -> float:
     """
     Calculate the Root Mean Squared Error (RMSE) between observed and model output values.
 
@@ -203,14 +209,16 @@ def root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Datase
     In this example, `root_mean_squared_error` calculates the RMSE for each pair of `xr.DataArray` objects in `observed_data` 
     and `output_data` and then averages these values to produce the final RMSE.
     """
-    observed = _to_numpy(observed)
-    output = _to_numpy(output)
+    observed = _to_numpy(observed, var)
+
+    output = _to_numpy(output, var)
+
     _check_shapes(observed, output)
 
     return np.sqrt(np.mean((observed - output) ** 2))
 
 def bias(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
-         output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
+         output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],var: str = None) -> float:
     """
     Calculate the bias between observed and model output values.
 
@@ -247,14 +255,16 @@ def bias(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, Li
     In this example, `bias` calculates the bias for each pair of `xr.DataArray` objects in `observed_data` 
     and `output_data` and then averages these values to produce the final bias.
     """
-    observed = _to_numpy(observed)
-    output = _to_numpy(output)
+    observed = _to_numpy(observed, var)
+
+    output = _to_numpy(output, var)
+
     _check_shapes(observed, output)
 
     return np.mean(output - observed)
 
 def debiased_root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                                     output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
+                                     output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],var: str = None) -> float:
     """
     Calculate the Debiased Root Mean Squared Error (DRMSE) between observed and model output values.
 
@@ -292,8 +302,10 @@ def debiased_root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, 
     In this example, `debiased_root_mean_squared_error` calculates the DRMSE for each pair of `xr.DataArray` objects in `observed_data` 
     and `output_data` and then averages these values to produce the final DRMSE.
     """
-    observed = _to_numpy(observed)
-    output = _to_numpy(output)
+    observed = _to_numpy(observed, var)
+
+    output = _to_numpy(output, var)
+
     _check_shapes(observed, output)
 
     bias_value = np.mean(output - observed)
@@ -301,7 +313,7 @@ def debiased_root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, 
     return np.sqrt(np.mean((observed - debiased_predictions) ** 2))
 
 def pearson_correlation(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                        output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]]) -> float:
+                        output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],var: str = None) -> float:
     """
     Calculate the Pearson correlation coefficient between observed and model output values.
 
@@ -338,15 +350,17 @@ def pearson_correlation(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, p
     In this example, `pearson_correlation` calculates the Pearson correlation coefficient for each pair of `xr.DataArray` objects in `observed_data` 
     and `output_data` and then averages these values to produce the final coefficient.
     """
-    observed = _to_numpy(observed)
-    output = _to_numpy(output)
+    observed = _to_numpy(observed, var)
+
+    output = _to_numpy(output, var)
+
     _check_shapes(observed, output)
 
     return np.corrcoef(observed.flatten(), output.flatten())[0, 1]
 
 def calculate_continuous_metrics(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                                  output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
-                                 metrics: Union[str, Tuple[str], List[str]] = None) -> dict:
+                                 metrics: Union[str, Tuple[str], List[str]] = None, var: str = None) -> dict:
     """
     Calculate specified continuous metrics between observed and model output values.
 
@@ -477,8 +491,10 @@ def confusion_matrix(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.D
     In this example, the `confusion_matrix` function calculates the confusion matrix by comparing the observed values 
     with the model output values, using a threshold of 0.5 to classify the output data.
     """
-    observed = _to_numpy(observed)
-    output = _to_numpy(output)
+    observed = _to_numpy(observed, var)
+
+    output = _to_numpy(output, var)
+
     _check_shapes(observed, output)
 
     observed_binary = _binary_classification(observed, threshold)
@@ -1156,7 +1172,8 @@ def fss_compute(fss: dict) -> float:
 def fss_score(
               observed:Union[np.array, xr.DataArray, pd.DataFrame],
               output:Union[np.array, xr.DataArray, pd.DataFrame],
-              threshold: Union[float, int, List[Union[float, int]]] , scale:Union[float, int,  List[Union[float, int]]]
+              threshold: Union[float, int, List[Union[float, int]]] , scale:Union[float, int,  List[Union[float, int]]],
+              var: str = None
               ) -> float:
     """
     Calculate the Fractions Skill Score (FSS) between observed and model output values based on specified thresholds and scales.
@@ -1201,8 +1218,10 @@ def fss_score(
     In this example, the `calculate_fss_score` function calculates the FSS by comparing the observed values 
     with the model output values, using a threshold of 0.5 and a scale of 10 grid points.
     """
-    output = _to_numpy(output)
-    observed = _to_numpy(observed)
+    output = _to_numpy(output, var)
+
+    observed = _to_numpy(observed, var)
+
     _check_shapes(output, observed)
 
 
