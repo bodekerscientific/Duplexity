@@ -37,6 +37,7 @@ Clone the directory
 ~~~~~~~~~~~~~~~~~~~
 
 Navigate to the directory you would like to clone the Duplexity repository into, and clone from GitHub:
+
 .. code-block:: console
 
     git clone https://github.com/lexixu19/duplexity.git
@@ -70,7 +71,10 @@ You should be able to see `setup.py` in this directory. Run the following comman
 
 
 
-Note: if you are a contributor or editor of the Duplexity environment, you should use `pip install -e` . to allow you to make edits which are immediately reflected when you import locally.
+.. note::
+
+    If you are a contributor or editor of the Duplexity environment, you should use `pip install -e` . to allow you to make edits which are immediately reflected when you import locally.
+
 
 
 Importing Duplexity
