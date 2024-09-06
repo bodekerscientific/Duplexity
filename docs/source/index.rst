@@ -11,7 +11,7 @@ evaluating the performance of machine learning models. It is designed to be easy
 range of metrics for comparing data sets
 
 .. note::
-   
+
    This project is still in the early development stages. This means the code is 
    constantly changing, and we currently don't guarantee backwards compatibility 
    when changes are made. Once a stable release of Duplexity is available, we will
@@ -53,4 +53,26 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+
+Contributing
+============
+
+If there are metrics you would like to see added to Duplexity, please get in touch with the development team: `Lexi Xu <https://github.com/lexixu19/Duplexity/blob/main/lexi.xu12@gmail.com>`_ or `Emily O'Riordan <https://github.com/lexixu19/Duplexity/blob/main/emily@bodekerscientific.com>`_.
+
+
+License
+=======
+
+This project is licensed under the MIT License.
+
+
+
+API Reference
+=============
+
+The API reference provides detailed information on all the functions and classes available in the **Duplexity** package.
+
+.. toctree::
+    :maxdepth: 2
+    api_reference
 
