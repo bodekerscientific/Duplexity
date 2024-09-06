@@ -11,6 +11,7 @@ evaluating the performance of machine learning models. It is designed to be easy
 range of metrics for comparing data sets
 
 .. note::
+   
    This project is still in the early development stages. This means the code is 
    constantly changing, and we currently don't guarantee backwards compatibility 
    when changes are made. Once a stable release of Duplexity is available, we will
