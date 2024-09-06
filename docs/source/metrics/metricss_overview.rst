@@ -22,8 +22,11 @@ The metrics in **Duplexity** are divided into the following categories:
 - **Image Metrics**: Metrics typically used for evaluating image-based data, comparing the visual similarity between observed and predicted images.
 
 
+
+
 .. toctree::
     :maxdepth: 2
+    
     PixelWise Metrics <pixelwise>
     Probabilistic Metrics <probabilistic>
     Ensemble Metrics <ensemble>

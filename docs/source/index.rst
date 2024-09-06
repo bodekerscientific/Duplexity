@@ -43,6 +43,12 @@ The **Duplexity** package provides a range of metrics for validating the perform
 
 Each of these metrics can be calculated using a wide variety of input formats such as NumPy arrays, xarray datasets, and pandas dataframes.
 
+Metrics Overview
+================
+
+Duplexity offers a comprehensive suite of evaluation metrics, grouped by the nature of the data and predictions.
+
+.. include:: metrics_overview.rst
 
 
 
@@ -74,5 +80,7 @@ The API reference provides detailed information on all the functions and classes
 
 .. toctree::
     :maxdepth: 2
+
+    Metrics Overview <metrics/metricss_overview>
     api_reference
 
