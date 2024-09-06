@@ -21,7 +21,9 @@ range of metrics for comparing data sets
    :caption: Contents:
 
    Installation <installation>
-   Metrics <metrics/metrics>
+   Validation Metrics <metrics/metrics>
+   Visualization <plot/plot>
+   
 
 
 
