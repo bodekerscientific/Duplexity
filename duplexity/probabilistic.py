@@ -1,3 +1,22 @@
+"""
+Probabilistic
+===============================
+
+.. automodule:: duplexity.probabilistic
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. autosummary::
+    :toctree: ../generated/
+
+
+    
+"""
+
+
+
+
 import numpy as np
 from scipy.signal import welch
 import matplotlib.pyplot as plt
@@ -13,17 +32,18 @@ import xarray as xr
 from scipy.ndimage import uniform_filter
 
 
-def crps_ensemble(observed: Union[np.array, xr.DataArray], output: Union[np.array, xr.DataArray]) -> np.array:
+
+def CRPS(observed: Union[np.array, xr.DataArray], ensemble_output: Union[np.array, xr.DataArray]) -> float:
     """
-    Compute the CRPS for a set of forecast ensembles and the corresponding observations.
+    Compute the continuous ranked probability score(CRPS) for a set of forecast ensembles and the corresponding observations.
 
     Parameters
     ----------
     observed : Union[np.array, xr.DataArray]
         Array of shape (w, h) containing the observed values.
-    output : Union[np.array, xr.DataArray]
+    ensemble_output : Union[np.array, xr.DataArray]
         Array of shape (n, w, h) containing the values from an ensemble
-        forecast of n members with m * n observations.
+        model output data of n members with m * n observations.
 
     Returns
     -------
@@ -330,112 +350,4 @@ def brier_score(observed: Union[np.array, xr.DataArray], output: Union[np.array,
 
     return brier_score
 
-
-
-
-def fss_init(threshold, scale):
-    """Initialize a fractions skill score (FSS) verification object."""
-    fss = dict(threshold=threshold, scale=scale, sum_fct_sq=0.0, sum_fct_obs=0.0, sum_obs_sq=0.0)
-    return fss
-
-def calculate_bp(data, threshold):
-    """
-    Calculate the Binary Predictor (BP) for the given data and threshold.
-    
-    Parameters:
-    data (np.ndarray): Array of data (observed or forecasted).
-    threshold (float): Threshold value for binarizing the data.
-    
-    Returns:
-    np.ndarray: Binary predictor array.
-    """
-    return (data >= threshold).astype(np.single)
-
-def calculate_np(bp, scale):
-    """
-    Calculate the Neighborhood Predictor (NP) for the given Binary Predictor (BP) and neighborhood size.
-    
-    Parameters:
-    bp (np.ndarray): Binary predictor array.
-    scale (int): Size of the neighborhood for calculating fractions.
-    
-    Returns:
-    np.ndarray: Neighborhood predictor array.
-    """
-    if scale > 1:
-        n_bp = uniform_filter(bp, size=scale, mode='constant', cval=0.0)
-    else:
-        n_bp = bp
-    return n_bp
-
-def calculate_fbs(np_f, np_o):
-    """
-    Calculate the Fractions Brier Score (FBS).
-    
-    Parameters:
-    np_f (np.ndarray): Neighborhood predictor for the forecasted data.
-    np_o (np.ndarray): Neighborhood predictor for the observed data.
-    
-    Returns:
-    float: Fractions Brier Score.
-    """
-    return np.mean((np_f - np_o) ** 2)
-
-def calculate_wfbs(np_f, np_o):
-    """
-    Calculate the Weighted Fractions Brier Score (WFBS).
-    
-    Parameters:
-    np_f (np.ndarray): Neighborhood predictor for the forecasted data.
-    np_o (np.ndarray): Neighborhood predictor for the observed data.
-    
-    Returns:
-    float: Weighted Fractions Brier Score.
-    """
-    return np.mean(np_f ** 2) + np.mean(np_o ** 2)
-
-def fss_update(fss, forecast, observed):
-    """
-    Update the FSS object with new forecast and observed data.
-    
-    Parameters:
-    fss (dict): FSS object.
-    forecast (np.ndarray): Forecasted data.
-    observed (np.ndarray): Observed data.
-    """
-    threshold = fss['threshold']
-    scale = fss['scale']
-
-    bp_f = calculate_bp(forecast, threshold)
-    bp_o = calculate_bp(observed, threshold)
-    
-    np_f = calculate_np(bp_f, scale)
-    np_o = calculate_np(bp_o, scale)
-
-    fss['sum_fct_sq'] += np.sum(np_f ** 2)
-    fss['sum_obs_sq'] += np.sum(np_o ** 2)
-    fss['sum_fct_obs'] += np.sum(np_f * np_o)
-
-def fss_compute(fss):
-    """
-    Calculate the Fractions Skill Score (FSS)
-    
-    Parameters:
-    fss (dict): FSS object.
-    
-    Returns:
-    float: Fractions Skill Score.
-    """
-    sum_fct_sq = fss['sum_fct_sq']
-    sum_obs_sq = fss['sum_obs_sq']
-    sum_fct_obs = fss['sum_fct_obs']
-
-    fbs = sum_fct_sq + sum_obs_sq - 2 * sum_fct_obs
-    wfbs = sum_fct_sq + sum_obs_sq
-
-    if wfbs == 0:
-        return np.nan
-
-    fss_value = 1 - fbs / wfbs
-    return fss_value
 
