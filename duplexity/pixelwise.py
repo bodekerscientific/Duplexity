@@ -57,7 +57,8 @@ from typing import List, Tuple, Union, Optional
 from scipy.ndimage import uniform_filter
 import scipy.signal
 from skimage.draw import disk
-from duplexity.utils import _to_numpy, _check_shapes, _check_2d_data, _binary_classification
+from duplexity.utils import _to_numpy, _check_shapes, _binary_classification
+
 
 
 
@@ -111,6 +112,11 @@ def mean_absolute_error(observed: Union[
         The Mean Absolute Error (MAE), which measures the average magnitude of the absolute errors 
         between observed and predicted values. MAE provides a linear score that does not consider the direction of errors.
 
+        .. math::
+
+            \text{MAE} = \frac{1}{n} \sum{|Y_i - X_i|}
+
+
     Notes
     -----
     The MAE is a widely used metric in regression analysis and is particularly useful for evaluating model performance 
@@ -160,6 +166,11 @@ def mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd
     float
         The Mean Squared Error (MSE), which measures the average squared difference between observed and predicted values. 
         MSE is a quadratic scoring rule that penalizes larger errors more than smaller ones.
+
+        .. math::
+
+            \text{MSE} = \frac{1}{n} \sum{(Y_i - X_i)^2}
+
 
     Notes
     -----
@@ -212,6 +223,10 @@ def root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Datase
         The Root Mean Squared Error (RMSE), which is the square root of the average squared differences 
         between observed and predicted values. RMSE is sensitive to large errors and is often used to assess the accuracy of a model.
 
+        .. math::
+
+            \text{RMSE} = \sqrt{\frac{1}{n} \sum{(Y_i - X_i)^2}}
+
     Notes
     -----
     RMSE is a commonly used metric in regression analysis that provides an overall measure of the error magnitude. 
@@ -263,6 +278,10 @@ def bias(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, Li
         The bias, which is the average difference between the observed and model output values. 
         Positive bias indicates overestimation by the model, while negative bias indicates underestimation.
 
+        .. math::
+
+            \text{Bias} = \frac{1}{n} \sum{(Y_i - X_i)}
+
     Notes
     -----
     Bias is a simple but important metric that indicates the overall tendency of a model to overestimate or 
@@ -313,6 +332,11 @@ def debiased_root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, 
     float
         The Debiased Root Mean Squared Error (DRMSE), which is the square root of the mean squared error 
         calculated after removing the bias between observed and predicted values.
+
+        .. math::
+
+            \text{DRMSE} = \sqrt{\frac{1}{n} \sum{(X_i - Y_i - \bar{X} + \bar{Y})^2}}
+
 
     Notes
     -----
@@ -368,6 +392,10 @@ def pearson_correlation(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, p
         The Pearson correlation coefficient, a measure of the linear relationship between the observed and model output values. 
         The coefficient ranges from -1 to 1, where 1 indicates a perfect positive linear relationship, -1 indicates a perfect negative 
         linear relationship, and 0 indicates no linear relationship.
+
+        .. math::
+
+            r = \frac{\sum{(X_i - \bar{X})(Y_i - \bar{Y})}}{\sqrt{\sum{(X_i - \bar{X})^2} \sum{(Y_i - \bar{Y})^2}}}
 
     Notes
     -----
@@ -447,6 +475,14 @@ def confusion_matrix(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.D
         - The first row corresponds to the actual negative cases (True Negative, False Positive).
         - The second row corresponds to the actual positive cases (False Negative, True Positive).
 
+        .. math::
+
+            \begin{bmatrix}
+            TN & FP \\
+            FN & TP
+            \end{bmatrix}
+
+
     Notes
     -----
     The confusion matrix is a widely used tool for evaluating the performance of a classification model. 
@@ -510,7 +546,10 @@ def precision(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFram
     -------
     float
         The precision, which is the ratio of true positives to the sum of true positives and false positives.
-        Precision = TP / (TP + FP)
+        
+        .. math::
+
+            \text{Precision} = \frac{TP}{TP + FP}
 
     Notes
     -----
@@ -561,7 +600,10 @@ def recall(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, 
     -------
     float
         The recall, which is the ratio of true positives to the sum of true positives and false negatives.
-        Recall = TP / (TP + FN)
+        
+        .. math::
+
+            \text{Recall} = \frac{TP}{TP + FN}
 
     Notes
     -----
@@ -614,7 +656,10 @@ def f1_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame
     -------
     float
         The F1 score, which is the harmonic mean of precision and recall.
-        F1 Score = 2 * (Precision * Recall) / (Precision + Recall)
+
+        .. math::
+
+            \text{F1 Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
 
     Notes
     -----
@@ -667,7 +712,10 @@ def accuracy(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame
     -------
     float
         The accuracy, which is the ratio of the number of correct predictions to the total number of predictions.
-        Accuracy = (TP + TN) / (TP + TN + FP + FN)
+        
+        .. math::
+
+            \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
 
     Notes
     -----
@@ -710,7 +758,10 @@ def critical_success_index(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset
     -------
     float
         The Critical Success Index (CSI), which is the ratio of true positives to the sum of true positives, false negatives, and false positives.
-        CSI = TP / (TP + FN + FP)
+        
+        .. math::
+
+            \text{CSI} = \frac{TP}{TP + FN + FP}
 
     Notes
     -----
@@ -1001,8 +1052,9 @@ def sedi(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, Li
 # Main Function
 def calculate_pixelwise_metrics(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame],
                                 output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame],
-                                metrics: Union[str, Tuple[str], List[str]] = None,
-                                metric_type: str = None,
+                                metrics_list: Union[Tuple[str], List[str]] = None,
+                                threshold: float = 0.5,
+                                var: str = None,
                                 **kwargs) -> dict:
     """
     Calculate specified metrics (categorical or continuous) between observed and model output values.
@@ -1019,7 +1071,7 @@ def calculate_pixelwise_metrics(observed: Union[np.ndarray,  xr.DataArray, xr.Da
     output : Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame]
         Array of shape (h, w) or (n, h, w) containing model output binary or continuous values.
 
-    metrics : Union[str, Tuple[str], List[str]], optional, default=None
+    metrics_list : Union[Tuple[str], List[str]], optional, default=None
         A string, tuple, or list of strings specifying the categorical metrics to calculate.
         If not provided, all available metrics will be calculated. Available metrics are:
 
@@ -1044,16 +1096,9 @@ def calculate_pixelwise_metrics(observed: Union[np.ndarray,  xr.DataArray, xr.Da
             - "HSS" (Heidke Skill Score)
             - "PSS" (Peirce Skill Score)
             - "SEDI" (Symmetric Extremal Dependence Index)
+    threshold : float, optional
+        A threshold value used to convert continuous output values into binary classifications. Default is 0.5.
 
-    metric_type : str, optional, default=None
-        A string specifying the type of metrics to calculate. Available options are:
-        - "categorical" (for binary classification metrics)
-        - "continuous" (for regression metrics)
-        It is not necessary to specify the metric_type if the metrics parameter is provided.
-
-            threshold : float, optional
-        A threshold value used to convert continuous output values into binary classifications. 
-        Default is 0.5.
 
     var : str, optional
         If the input data is an xarray Dataset, `var` specifies the variable name to extract for the calculation. 
@@ -1064,6 +1109,13 @@ def calculate_pixelwise_metrics(observed: Union[np.ndarray,  xr.DataArray, xr.Da
     dict
         A dictionary where the keys are the names of the metrics and the values are the corresponding calculated values.
 
+    Examples
+    --------
+    >>> observed = np.random.rand(100, 100)
+    >>> output = np.random.rand(100, 100)
+    >>> calculate_pixelwise_metrics(observed, output, metrics_list=["accuracy", "f1", "mse"])
+    {'accuracy': 0.75, 'f1': 0.8, 'mse': 0.5}
+
     """
 
     # Define available metrics
@@ -1071,7 +1123,7 @@ def calculate_pixelwise_metrics(observed: Union[np.ndarray,  xr.DataArray, xr.Da
         "cm": confusion_matrix,
         "precision": precision,
         "recall": recall,
-        "F1": f1_score,
+        "f1": f1_score,
         "accuracy": accuracy,
         "csi": critical_success_index,
         "far": false_alarm_ratio,
@@ -1090,31 +1142,27 @@ def calculate_pixelwise_metrics(observed: Union[np.ndarray,  xr.DataArray, xr.Da
         "drmse": debiased_root_mean_squared_error,
         "corr": pearson_correlation
     }
+    # Handle xarray Dataset or DataFrame by extracting specific variables if needed
+    if isinstance(observed, xr.Dataset) and var is not None:
+        observed = observed[var]
+    if isinstance(output, xr.Dataset) and var is not None:
+        output = output[var]
 
-    # Extract optional parameters from kwargs
-    threshold = kwargs.get("threshold", 0.5)  # Default threshold is 0.5
-    var = kwargs.get("var", None)
-    observed = _to_numpy(observed,var)
-    output = _to_numpy(output,var)
 
-    # Convert metric names to lowercase to handle case insensitivity
-    if isinstance(metrics, str):
-        metrics = [metrics.lower()]
-    elif isinstance(metrics, (tuple, list)):
-        metrics = [m.lower() for m in metrics]
+    all_metrics = list(cate_metrics.keys()) + list(cont_metrics.keys())
 
-    
+    if metrics_list is None:
+        metrics = all_metrics
+    else:
+        metrics = [m.lower() for m in metrics_list]
 
-    # Select available metrics based on the specified type
-    available_metrics = _get_available_metrics(metric_type, cate_metrics, cont_metrics)
+    result = {}
+    for metric in metrics:
+        if metric not in all_metrics:
+            raise ValueError(f"Invalid metric name: {metric}. Available metrics are: {all_metrics}")
+        elif metric in cate_metrics:
+            result[metric] = cate_metrics[metric](observed, output, threshold, **kwargs)
+        elif metric in cont_metrics:
+            result[metric] = cont_metrics[metric](observed, output, **kwargs)
 
-    # If metrics is None, calculate all available metrics
-    if metrics is None and metric_type is None:
-        metrics = list(available_metrics.keys())
-    
-
-    # Separate and calculate categorical and continuous metrics
-    cate_results = _calculate_categorical_metrics(observed, output, metrics, cate_metrics, threshold)
-    cont_results = _calculate_continuous_metrics(observed, output, metrics, cont_metrics)
-
-    return {**cate_results, **cont_results}
+    return result
