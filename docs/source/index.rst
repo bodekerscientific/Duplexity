@@ -24,7 +24,7 @@ Table of Contents
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: 
 
    Installation <installation>
    Validation Metrics <metrics/metrics>
@@ -81,6 +81,5 @@ The API reference provides detailed information on all the functions and classes
 .. toctree::
     :maxdepth: 2
 
-    Metrics Overview <metrics/metricss_overview>
     api_reference
 
