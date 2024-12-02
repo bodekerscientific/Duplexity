@@ -134,7 +134,7 @@ def mean_absolute_error(observed: Union[
     output = _to_numpy(output, var)
 
     _check_shapes(observed, output)
-    return np.mean(np.abs(observed - output))
+    return np.nanmean(np.abs(observed - output))
 
 def mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                        output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
@@ -288,7 +288,7 @@ def bias(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, Li
 
     _check_shapes(observed, output)
 
-    return np.mean(output - observed)
+    return np.nanmean(output - observed)
 
 def debiased_root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                                      output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],var: str = None) -> float:
