@@ -57,7 +57,14 @@ from typing import List, Tuple, Union, Optional
 from scipy.ndimage import uniform_filter
 import scipy.signal
 from skimage.draw import disk
-from duplexity.utils import _to_numpy, _check_shapes, _check_2d_data, _binary_classification
+from duplexity.utils import (_to_numpy, 
+                             _check_shapes,
+                             _check_2d_data,
+                             _binary_classification,
+                             _get_available_metrics,
+                                _get_metric_function,
+                                _calculate_categorical_metrics,
+                                _calculate_continuous_metrics)
 
 
 
@@ -134,7 +141,7 @@ def mean_absolute_error(observed: Union[
     output = _to_numpy(output, var)
 
     _check_shapes(observed, output)
-    return np.nanmean(np.abs(observed - output))
+    return np.nanmean(np.abs(observed - output)).item()
 
 def mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                        output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
@@ -186,7 +193,7 @@ def mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd
 
     _check_shapes(observed, output)
 
-    return np.mean((observed - output) ** 2)
+    return np.nanmean((observed - output) ** 2).item()
 
 def root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                             output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],var: str = None) -> float:
@@ -237,7 +244,7 @@ def root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Datase
 
     _check_shapes(observed, output)
 
-    return np.sqrt(np.mean((observed - output) ** 2))
+    return np.sqrt(np.nanmean((observed - output) ** 2)).item()
 
 def bias(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
          output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],var: str = None) -> float:
@@ -288,7 +295,7 @@ def bias(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, Li
 
     _check_shapes(observed, output)
 
-    return np.nanmean(output - observed)
+    return np.nanmean(output - observed).item()
 
 def debiased_root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                                      output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],var: str = None) -> float:
@@ -340,9 +347,9 @@ def debiased_root_mean_squared_error(observed: Union[np.ndarray,  xr.DataArray, 
 
     _check_shapes(observed, output)
 
-    bias_value = np.mean(output - observed)
+    bias_value = np.nanmean(output - observed)
     debiased_predictions = output - bias_value
-    return np.sqrt(np.mean((observed - debiased_predictions) ** 2))
+    return np.sqrt(np.nanmean((observed - debiased_predictions) ** 2)).item()
 
 def pearson_correlation(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                         output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],var: str = None) -> float:
@@ -391,9 +398,18 @@ def pearson_correlation(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, p
 
     output = _to_numpy(output, var)
 
+    if np.any(np.isnan(observed)) or np.any(np.isnan(output)): 
+        observed = observed[~np.isnan(observed)]
+        output = output[~np.isnan(output)]
+        try:
+            _check_shapes(observed, output)
+        except:
+            raise ValueError("The observed and output arrays have different shapes after removing NaN values. Please ensure that the arrays have the same shape.")
+
     _check_shapes(observed, output)
 
-    return np.corrcoef(observed.flatten(), output.flatten())[0, 1]
+
+    return (np.corrcoef(observed.flatten(), output.flatten())[0, 1]).item()
 
 
 ###########################################
@@ -531,7 +547,7 @@ def precision(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFram
     with the model output values, using a threshold of 0.5 to classify the output data.
     """
     cm = confusion_matrix(observed, output, threshold, var)
-    return cm[0, 0] / (cm[0, 0] + cm[1, 0])
+    return (cm[0, 0] / (cm[0, 0] + cm[1, 0])).item()
 
 def recall(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
            output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
@@ -585,7 +601,7 @@ def recall(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, 
     """
 
     cm = confusion_matrix(observed, output, threshold, var)
-    return cm[0, 0] / (cm[0, 0] + cm[0, 1])
+    return (cm[0, 0] / (cm[0, 0] + cm[0, 1])).item()
 
 def f1_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
              output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
@@ -638,7 +654,7 @@ def f1_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame
     
     precision_value = precision(observed, output, threshold, var)
     recall_value = recall(observed, output, threshold, var)
-    return 2 * (precision_value * recall_value) / (precision_value + recall_value)
+    return float(2 * (precision_value * recall_value) / (precision_value + recall_value))
 
 def accuracy(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
              output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
@@ -679,7 +695,7 @@ def accuracy(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame
 
     """
     cm = confusion_matrix(observed, output, threshold, var)
-    return (cm[0, 0] + cm[1, 1]) / cm.sum()
+    return ((cm[0, 0] + cm[1, 1]) / cm.sum()).item()
 
 def critical_success_index(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                            output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
@@ -723,7 +739,7 @@ def critical_success_index(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset
     """
 
     cm = confusion_matrix(observed, output, threshold, var)
-    return cm[0, 0] / (cm[0, 0] + cm[0, 1] + cm[1, 0])
+    return (cm[0, 0] / (cm[0, 0] + cm[0, 1] + cm[1, 0])).item()
 
 
 
@@ -767,7 +783,7 @@ def false_alarm_ratio(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.
     """
 
     cm = confusion_matrix(observed, output, threshold, var)
-    return cm[1, 0] / (cm[0, 0] + cm[1, 0])
+    return (cm[1, 0] / (cm[0, 0] + cm[1, 0])).item()
 
 
 def probability_of_detection(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
@@ -811,7 +827,7 @@ def probability_of_detection(observed: Union[np.ndarray,  xr.DataArray, xr.Datas
     """
     
     cm = confusion_matrix(observed, output, threshold, var)
-    return cm[0, 0] / (cm[0, 0] + cm[0, 1])
+    return (cm[0, 0] / (cm[0, 0] + cm[0, 1])).item()
 
 def gilbert_skill_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                         output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
@@ -856,7 +872,7 @@ def gilbert_skill_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, p
     """
     cm = confusion_matrix(observed, output, threshold, var)
     hits_random = (cm[0, 0] + cm[1, 0]) * (cm[0, 0] + cm[0, 1]) / cm.sum()
-    return (cm[0, 0] - hits_random) / (cm[0, 0] + cm[0, 1] + cm[1, 0] - hits_random)
+    return ((cm[0, 0] - hits_random) / (cm[0, 0] + cm[0, 1] + cm[1, 0] - hits_random)).item()
 
 def heidke_skill_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                        output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
@@ -906,7 +922,7 @@ def heidke_skill_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd
     total = hits + false_alarms + misses + correct_negatives
     accuracy_random = ((hits + false_alarms) * (hits + misses) + (correct_negatives + misses) * (correct_negatives + false_alarms)) / (total * total)
     accuracy_observed = (hits + correct_negatives) / total
-    return (accuracy_observed - accuracy_random) / (1 - accuracy_random) if (1 - accuracy_random) != 0 else 0
+    return ((accuracy_observed - accuracy_random) / (1 - accuracy_random) if (1 - accuracy_random) != 0 else 0).item()
 
 def peirce_skill_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
                        output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
@@ -949,7 +965,7 @@ def peirce_skill_score(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd
     cm = confusion_matrix(observed, output, threshold, var)
     POD = cm[0, 0] / (cm[0, 0] + cm[0, 1])
     POFD = cm[1, 0] / (cm[1, 0] + cm[1, 1])
-    return POD - POFD
+    return (POD - POFD).item()
 
 def sedi(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
          output: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, List[Union[np.ndarray, xr.DataArray, xr.Dataset, pd.DataFrame]]],
@@ -990,7 +1006,7 @@ def sedi(observed: Union[np.ndarray,  xr.DataArray, xr.Dataset, pd.DataFrame, Li
     F = cm[1, 0] / (cm[1, 0] + cm[1, 1])
     if H in [0, 1] or F in [0, 1]:
         return float('nan')  # Avoid division by zero and log(0)
-    return (np.log(F) - np.log(H) - np.log(1 - F) + np.log(1 - H)) / (np.log(F) + np.log(H) + np.log(1 - F) + np.log(1 - H))
+    return ((np.log(F) - np.log(H) - np.log(1 - F) + np.log(1 - H)) / (np.log(F) + np.log(H) + np.log(1 - F) + np.log(1 - H))).item()
 
 #########################################
 #     Calculate Pixelwise Metrics       #
