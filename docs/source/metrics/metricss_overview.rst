@@ -25,7 +25,7 @@ The metrics in **Duplexity** are divided into the following categories:
 
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     
     PixelWise Metrics <pixelwise>
     Probabilistic Metrics <probabilistic>
