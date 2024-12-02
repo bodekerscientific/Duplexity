@@ -19,11 +19,11 @@ import os
 import numpy as np
 import xarray as xr
 import pandas as pd
-import matplotlib.pyplot as plt
-from typing import Union
 from duplexity.pixelwise import mean_absolute_error, mean_squared_error, bias, pearson_correlation, root_mean_squared_error
 from typing import Union, Callable, Dict, List, Tuple
 from duplexity.utils import _to_numpy, _check_shapes
+import matplotlib.pyplot as plt
+from typing import List, Dict, Union
 
 
 
@@ -211,9 +211,17 @@ def plot_metrics_map(metrics: dict, metric_name: str, title: str, save_path: str
 #
 
 
+"""
+FSS Plotting Utilities
+----------------------
 
-import matplotlib.pyplot as plt
-from typing import List, Dict, Union
+This module contains utility functions for plotting Fractions Skill Score (FSS) results.
+
+.. autosummary::
+
+    plot_fss
+"""
+
 
 def plot_fss(fss_results_all: Dict[Union[float, int], List[float]],
                                scales: Union[List[int], range],
@@ -284,38 +292,58 @@ def plot_fss(fss_results_all: Dict[Union[float, int], List[float]],
 
 
 
+"""
+RAPSD Plotting Utilities
+---------------------------
+
+This module contains utility functions for plotting radially averaged power spectral density (RAPSD) results.
+
+.. autosummary::
+
+    plot_rapsd
+    
+"""
+
 # Plot the RAPSD on a log-log scale
 def plot_rapsd(freqs, radial_profile, 
                x_units=None, y_units=None, 
                spatial_scales =None, 
                color="k", lw=1.0, 
-               label=None, ax=None, figsize=(8, 6), save_path=None, model=None):
+               label=None, ax=None, save_path=None, title=None):
     """
     Plot the radially averaged power spectral density (RAPSD) on a log-log scale.
     
     Parameters
     ----------
     freqs (np.array): 
-        1D array containing the  frequencies.
+        1D array containing the  frequencies computed with the function
+        :py:func:`duplexity.spatial.rapsd`.
     radial_profile (np.array): 
         1D array containing the radially averaged power spectral density.
-    x_units (str):
-        Units of the X variable (distance, e.g. "pixel").
-    y_units (str):
-        Units of the Y variable (amplitude, e.g. "mm").
+    x_units: str, optional
+        Units of the X variable, distance (e.g."pixel', "km").
+    y_units : str, optional
+        Units of the Y variable, amplitude (e.g. "dBR").
     spatial_scales (np.array):
         Array containing the spatial scales (e.g. wavelengths). If provided, the x-axis will be labeled with the spatial scales.
-    color (str):
+    color: str, optional
         Line color.
-    lw (float):
+    lw: str, optional
         Line width.
-    label (str):
+    label: str, optional
         Label (for legend).
-    ax (Axes):
+    ax: Axes, optional
         Plot axes.
+    save_path: str, optional
+        Path to save the plot.
+    title: str, optional
+        Title of the plot.
     
     Returns:
-    None
+    ------- 
+    ax: Axes
+        Plot axes
+
     """
 
     if len(freqs) != len(radial_profile):
@@ -323,7 +351,7 @@ def plot_rapsd(freqs, radial_profile,
 
     # Create a new axis if none is provided
     if ax is None:
-        fig, ax = ax.subplots(111)
+        fig, ax = plt.subplots()
 
     # Plot spectrum in log-log scale
     ax.loglog(
@@ -332,104 +360,36 @@ def plot_rapsd(freqs, radial_profile,
         color=color, 
         linewidth=lw, 
         label=label)
-    if x_units is not None:
-        ax.set_xlabel(f"Frequency [{x_units}]")
-    else:
-        ax.set_xlabel("Frequency")
 
-        
+
+    # X-axis label
+    if spatial_scales is not None:
+        ax.set_xticks(1 / spatial_scales)
+        ax.set_xticklabels(spatial_scales)
+        ax.set_xlabel(f"Wavelength [{x_units}]" if x_units else "Wavelength")
+    else:
+        ax.set_xlabel(f"Frequency [{x_units}]" if x_units else "Frequency")
+
+
     # Set the y-axis label with the provided units
-    if y_units is not None:
-        ax.set_ylabel(f"Power [{y_units}]")
+    if y_units is not None and x_units is not None:
+        units = fr"$\left[\frac{{{y_units}^2}}{{{x_units}}}\right]$"
+        ax.set_ylabel(f"Power Density {units}")
+    elif y_units is not None:
+        units = fr"$\left[{y_units}^2\right]$"
+        ax.set_ylabel(f"Power Density {units}")
     else:
-        ax.set_ylabel("Power")
+        ax.set_ylabel("Power Density")
 
+    # Set the title of the plot
+    if title is not None:
+        ax.set_title(title)
+
+    # Save the plot if a path is provided
     if save_path is not None:
-        pltsave = os.path.join(save_path, f"RAPSD_{model}.png")
+        pltsave = os.path.join(save_path, f"RAPSD_{title}.png")
         plt.savefig(pltsave, bbox_inches='tight')
         plt.close()
     else:
         plt.show()
         plt.close()
-
-
-def plot_spectrum1d(
-    fft_freq,
-    fft_power,
-    x_units=None,
-    y_units=None,
-    wavelength_ticks=None,
-    color="k",
-    lw=1.0,
-    label=None,
-    ax=None,
-    **kwargs,
-):
-    """
-    Function to plot in log-log a radially averaged Fourier spectrum.
-    Parameters
-    ----------
-    fft_freq: array-like
-        1d array containing the Fourier frequencies computed with the function
-        :py:func:`pysteps.utils.spectral.rapsd`.
-    fft_power: array-like
-        1d array containing the radially averaged Fourier power spectrum
-        computed with the function :py:func:`pysteps.utils.spectral.rapsd`.
-    x_units: str, optional
-        Units of the X variable (distance, e.g. "km").
-    y_units: str, optional
-        Units of the Y variable (amplitude, e.g. "dBR").
-    wavelength_ticks: array-like, optional
-        List of wavelengths where to show xticklabels.
-    color: str, optional
-        Line color.
-    lw: float, optional
-        Line width.
-    label: str, optional
-        Label (for legend).
-    ax: Axes, optional
-        Plot axes.
-    Returns
-    -------
-    ax: Axes
-        Plot axes
-    """
-    # Check input dimensions
-    n_freq = len(fft_freq)
-    n_pow = len(fft_power)
-    if n_freq != n_pow:
-        raise ValueError(
-            f"Dimensions of the 1d input arrays must be equal. {n_freq} vs {n_pow}"
-        )
-
-    if ax is None:
-        ax = plt.subplot(111)
-
-    # Plot spectrum in log-log scale
-    ax.plot(
-        10 * np.log10(fft_freq[np.where(fft_freq > 0.0)]),
-        10 * np.log10(fft_power[np.where(fft_freq > 0.0)]),
-        color=color,
-        linewidth=lw,
-        label=label,
-    )
-
-    # X-axis
-    if wavelength_ticks is not None:
-        wavelength_ticks = np.array(wavelength_ticks)
-        freq_ticks = 1 / wavelength_ticks
-        ax.set_xticks(10 * np.log10(freq_ticks))
-        ax.set_xticklabels(wavelength_ticks)
-        if x_units is not None:
-            ax.set_xlabel(f"Wavelength [{x_units}]")
-    else:
-        if x_units is not None:
-            ax.set_xlabel(f"Wavelength [1/{x_units}]")
-
-    # Y-axis
-    if y_units is not None:
-        # { -> {{ with f-strings
-        power_units = fr"$10log_{{ 10 }}(\frac{{ {y_units}^2 }}{{ {x_units} }})$"
-        ax.set_ylabel(f"Power {power_units}")
-
-    return ax
