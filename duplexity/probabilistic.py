@@ -253,7 +253,7 @@ def reliability(observed: Union[np.array, xr.DataArray], output: Union[np.array,
     output = output.flatten()
     bins = np.linspace(0, 1, 11)
     bin_indices = np.digitize(output, bins)
-    bin_observed = np.zeros((len(bins), len(bins))
+    bin_observed = np.zeros((len(bins), len(bins)))
     for i in range(len(bins)):
         for j in range(len(bins)):
             bin_observed[i, j] = np.mean(observed[bin_indices == i] == j)
@@ -301,7 +301,7 @@ def resolution(observed: Union[np.array, xr.DataArray], output: Union[np.array, 
     output = output.flatten()
     bins = np.linspace(0, 1, 11)
     bin_indices = np.digitize(output, bins)
-    bin_observed = np.zeros((len(bins), len(bins))
+    bin_observed = np.zeros((len(bins), len(bins)))
     for i in range(len(bins)):
         for j in range(len(bins)):
             bin_observed[i, j] = np.mean(observed[bin_indices == i] == j)
