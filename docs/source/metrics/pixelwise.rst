@@ -1,7 +1,3 @@
-PixelWise Metrics
-=====================
-
-Pixel-wise metrics are used to evaluate the performance of models by comparing the observed data and the model output at each individual pixel or grid point.
 
 .. automodule:: duplexity.pixelwise
     :members:

@@ -33,6 +33,9 @@ Table of Contents
    Validation Metrics <metrics/metrics>
    Visualization <plot/plot>
    API Reference <api_reference>
+   Contributing <contributing>
+   License <license>
+
    
 
 Indices and tables
@@ -41,18 +44,4 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-
-Contributing
-============
-
-If there are metrics you would like to see added to Duplexity, please get in touch with the development team: `Lexi Xu <https://github.com/lexixu19/Duplexity/blob/main/lexi.xu12@gmail.com>`_ or `Emily O'Riordan <https://github.com/lexixu19/Duplexity/blob/main/emily@bodekerscientific.com>`_.
-
-
-License
-=======
-
-This project is licensed under the `MIT License <https://choosealicense.com/licenses/mit/>`_.
-
-
 
