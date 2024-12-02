@@ -155,7 +155,7 @@ def _get_metric_function(metric: Union[str, Callable], available_metrics: Dict[s
 
 
 # Helper Functions
-def _get_available_metrics(metrics:Union[str, callable, tuple[str], list[str]],metric_type: str, cate_metrics: dict, cont_metrics: dict) -> dict:
+def _get_available_metrics(metric_type: str, cate_metrics: dict, cont_metrics: dict) -> dict:
     """
     Return the available metrics based on the provided metric_type.
 
@@ -209,7 +209,8 @@ def _calculate_categorical_metrics(observed, output, metrics, cate_metrics, thre
         if metric in cate_metrics:
             results[metric] = cate_metrics[metric](observed, output, threshold)
         else:
-            raise ValueError(f"Categorical metric '{metric}' is not recognized.")
+            pass
+            # raise ValueError(f"Categorical metric '{metric}' is not recognized.")
     return results
 
 def _calculate_continuous_metrics(observed, output, metrics, cont_metrics):
@@ -237,5 +238,6 @@ def _calculate_continuous_metrics(observed, output, metrics, cont_metrics):
         if metric in cont_metrics:
             results[metric] = cont_metrics[metric](observed, output)
         else:
-            raise ValueError(f"Continuous metric '{metric}' is not recognized.")
+            pass
+            # raise ValueError(f"Continuous metric '{metric}' is not recognized.")
     return results
