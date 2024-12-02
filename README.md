@@ -42,12 +42,6 @@ pip install .
 
 Note: if you are a contributor or editor of the Duplexity environment, you should use `pip install -e .` to allow you to make edits which are immediately reflected when you import locally.
 
-### Importing Duplexity
-You should now be able to import Duplexity when running your environment! Try it out:
-
-<img width="959" alt="image" src="https://github.com/user-attachments/assets/62f7ba4a-460a-44b3-bae3-141c5ca50b5f">
-
-
 ## Contributing
 
 If there are metrics you would like to see added to Duplexity, please get in touch with the development team: [Lexi Xu](lexi.xu12@gmail.com) or [Emily O'Riordan](emily@bodekerscientific.com). 
