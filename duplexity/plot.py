@@ -265,7 +265,18 @@ def plot_fss(fss_results_all: Dict[Union[float, int], List[float]],
     Raises:
     ------
     ValueError
-        If save_plot is True but save_path is not provided.    
+        If save_plot is True but save_path is not provided.  
+
+    Examples:
+    --------
+    >>> import numpy as np
+    >>> from duplexity.plot import plot_fss
+    >>> # Generate random FSS results
+    >>> scales = [1, 2, 5, 10]
+    >>> fss_results = {0.5: [0.6, 0.7, 0.8, 0.85], 0.75: [0.5, 0.6, 0.7, 0.8]}
+    >>> # Plot the FSS results
+    >>> plot_fss(fss_results, scales, title="FSS Results", xlabel="Scale", ylabel="FSS")
+  
     """
     plt.figure(figsize=figsize)
     
@@ -344,6 +355,16 @@ def plot_rapsd(freqs, radial_profile,
     ax: Axes
         Plot axes
 
+
+    Examples:
+    --------
+    >>> import numpy as np
+    >>> from duplexity.plot import plot_rapsd
+    >>> # Generate a random dataset
+    >>> freqs = np.linspace(0.1, 100, 100)
+    >>> profile = np.random.rand(100)
+    >>> # Plot the RAPSD
+    >>> plot_rapsd(freqs, profile, x_units="km", y_units="dBR", title="RAPSD Example")
     """
 
     if len(freqs) != len(radial_profile):
