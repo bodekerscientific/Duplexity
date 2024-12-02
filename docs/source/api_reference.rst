@@ -14,17 +14,6 @@ This section provides detailed information about the API of the **Duplexity** pa
     duplexity.image
     duplexity.plot
 
-Modules
-=======
-
-.. automodule:: duplexity
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :inherited-members:
-
-Pixelwise Metrics
-=================
 
 .. automodule:: duplexity.pixelwise
     :members:
@@ -32,8 +21,6 @@ Pixelwise Metrics
     :show-inheritance:
     :inherited-members:
 
-Probabilistic Metrics
-=====================
 
 .. automodule:: duplexity.probabilistic
     :members:
@@ -41,8 +28,7 @@ Probabilistic Metrics
     :show-inheritance:
     :inherited-members:
 
-Ensemble Metrics
-================
+
 
 .. automodule:: duplexity.ensemble
     :members:
@@ -50,8 +36,6 @@ Ensemble Metrics
     :show-inheritance:
     :inherited-members:
 
-Spatial Metrics
-===============
 
 .. automodule:: duplexity.spatial
     :members:
@@ -59,8 +43,6 @@ Spatial Metrics
     :show-inheritance:
     :inherited-members:
 
-Image Metrics
-=============
 
 .. automodule:: duplexity.image
     :members:
@@ -68,8 +50,6 @@ Image Metrics
     :show-inheritance:
     :inherited-members:
 
-Plotting Utilities
-==================
 
 .. automodule:: duplexity.plot
     :members:

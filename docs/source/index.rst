@@ -8,7 +8,9 @@ Welcome to Duplexity's documentation!
 
 **Duplexity** is a Python package that provides a set of deterministic and probabilistic metrics for 
 evaluating the performance of machine learning models. It is designed to be easy to use and to provide a wide 
-range of metrics for comparing data sets
+range of metrics for comparing data sets.
+
+
 
 .. note::
 
@@ -27,30 +29,11 @@ Table of Contents
    :caption: 
 
    Installation <installation>
+   Metric Overview <metrics_overview>
    Validation Metrics <metrics/metrics>
    Visualization <plot/plot>
+   API Reference <api_reference>
    
-Introduction
-============
-
-The **Duplexity** package provides a range of metrics for validating the performance of weather forecasting models, machine learning models, and other spatial datasets. It includes:
-
-- **Pixel-Wise Metrics**: Evaluate individual grid points or pixels.
-- **Probabilistic Metrics**: Designed to assess probabilistic forecasts.
-- **Ensemble Metrics**: Assess the performance of ensemble forecasts.
-- **Spatial Metrics**: Focus on capturing the spatial structure of forecasts.
-- **Image Metrics**: Used to compare images or spatial datasets.
-
-Each of these metrics can be calculated using a wide variety of input formats such as NumPy arrays, xarray datasets, and pandas dataframes.
-
-Metrics Overview
-================
-
-Duplexity offers a comprehensive suite of evaluation metrics, grouped by the nature of the data and predictions.
-
-.. include:: metrics_overview.rst
-
-
 
 Indices and tables
 ==================
@@ -69,17 +52,7 @@ If there are metrics you would like to see added to Duplexity, please get in tou
 License
 =======
 
-This project is licensed under the MIT License.
+This project is licensed under the `MIT License <https://choosealicense.com/licenses/mit/>`_.
 
 
-
-API Reference
-=============
-
-The API reference provides detailed information on all the functions and classes available in the **Duplexity** package.
-
-.. toctree::
-    :maxdepth: 2
-
-    api_reference
 
