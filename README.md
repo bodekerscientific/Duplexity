@@ -48,4 +48,4 @@ If there are metrics you would like to see added to Duplexity, please get in tou
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](https://choosealicense.com/licenses/mit/).
