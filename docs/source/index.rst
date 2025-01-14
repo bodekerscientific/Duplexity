@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Duplexity's documentation!
+Duplexity: Model Evaluation Metrics
 =====================================
 
 **Duplexity** is a Python package that provides a set of deterministic and probabilistic metrics for 
@@ -19,27 +19,40 @@ range of metrics for comparing data sets.
    when changes are made. Once a stable release of Duplexity is available, we will
    upload Duplexity to PyPI to make it pip-installable.
 
+**Useful links**: `Code repository <https://github.com/bodekerscientific/Duplexity>`_ 
 
-
-Table of Contents
-=================
 
 .. toctree::
-   :maxdepth: 1
-   :caption: 
+   :hidden:
+   :caption: User Guide 
 
    Installation <installation>
    Metric Overview <metrics_overview>
    Validation Metrics <metrics/metrics>
    Visualization <plot/plot>
-   API Reference <api_reference>
+
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: Contributing
+
    Contributing <contributing>
    License <license>
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: API Reference
+
+   API Reference <api_reference>
+
+
 
    
 
 Indices and tables
-==================
+~~~~~~~~~~~~~~~~~~~
 
 * :ref:`genindex`
 * :ref:`modindex`
