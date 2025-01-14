@@ -23,12 +23,12 @@ range of metrics for comparing data sets.
 
 
 .. toctree::
+   :maxdepth: 1
    :hidden:
    :caption: User Guide 
 
-   Installation <installation>
-   Metric Overview <metrics_overview>
-   Validation Metrics <metrics/metrics>
+   Installation <guide/installation>
+   Metric Overview <metrics/metrics_overview>
    Visualization <plot/plot>
 
 
@@ -37,15 +37,15 @@ range of metrics for comparing data sets.
    :hidden:
    :caption: Contributing
 
-   Contributing <contributing>
-   License <license>
+   Contributing <guide/contributing>
+   License <guide/license>
 
 .. toctree::
    :maxdepth: 1
    :hidden:
    :caption: API Reference
 
-   API Reference <api_reference>
+   API Reference <guide/api_reference>
 
 
 
