@@ -11,7 +11,7 @@ This section covers the various plotting utilities available for visualizing the
     :show-inheritance:
 
 Available Plots
-===============
+----------------
 
 The following plotting utilities are provided to help visualize different aspects of the weather forecast validation results:
 
@@ -26,8 +26,7 @@ The following plotting utilities are provided to help visualize different aspect
     Metrics Map Plot <metrics_map_plot>
 
 Examples
-========
-
+---------
 Here are some examples of how to use the plotting utilities in conjunction with the validation metrics:
 
 .. code-block:: python
