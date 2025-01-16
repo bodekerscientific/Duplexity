@@ -6,7 +6,7 @@ Thank you for your interest in contributing to Duplexity! We hope that this guid
 
 We welcome contributions of new metrics, be it something you have developed or an existing method you think is missing from the package. We recommend reading through the documentation thoroughly to decide where in the package your contribution best fits. If you are unsure which module to add your method to, please get in touch and we'd be happy to discuss! 
 
-Before getting started with the below guide, we recommend [creating an issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/creating-an-issue) or commenting on an existing issue to let others know you are going to work on this. 
+For the majority of contributors, please follow this guide. If you are thinking of contributing a lot or you are closely involved with the project, please get in touch with the core developers to be added as a core contributor. Before getting started with the below guide, we recommend [creating an issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/creating-an-issue) or commenting on an existing issue to let others know you are going to work on this. 
 
 ### 1. Fork Duplexity
 Forking the Duplexity repo will make a copy of the repository in your own Github account. Any changes you make in this forked repository won't affect anyone else's code. We still recommend that you use branches to develop on your own fork. Be sure to [keep your fork up to date](https://help.github.com/articles/syncing-a-fork) with the main Duplexity repository to avoid merge conflicts as best as possible. 
