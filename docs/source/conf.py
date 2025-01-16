@@ -30,6 +30,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.autosummary',
     'sphinx.ext.todo',
+    'myst_parser',
 ]
 
 autosummary_generate = True
