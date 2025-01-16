@@ -4,4 +4,5 @@ sphinx-autodoc-typehints  # A Sphinx extension for type hints in autodoc
 sphinxcontrib-napoleon  # For Google style docstrings
 sphinxcontrib-httpdomain  # Example of another Sphinx extension
 recommonmark  # If you are using Markdown instead of reStructuredText
+myst-parser # Readthedocs can parse markdown
 -e . # The path to Duplexity's root directory 
