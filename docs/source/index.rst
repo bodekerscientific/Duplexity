@@ -36,7 +36,7 @@ range of metrics for comparing data sets.
    :maxdepth: 1
    :caption: Contributing
 
-   Contributing <../../CONTRIBUTING_GUIDE.md>
+   Contributing <guide/CONTRIBUTING.md>
    License <guide/license>
 
 .. toctree::
