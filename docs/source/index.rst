@@ -34,7 +34,6 @@ range of metrics for comparing data sets.
 
 .. toctree::
    :maxdepth: 1
-   :hidden:
    :caption: Contributing
 
    Contributing <../../CONTRIBUTING.md>
