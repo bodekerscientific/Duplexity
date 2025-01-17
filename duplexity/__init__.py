@@ -1,1 +1,1 @@
-from . import pixelwise, ensemble, get_metric, imagewise, plot, spatial, probabilistic, utils
+from . import image, pixelwise, ensemble, get_metric, plot, spatial, probabilistic, utils
