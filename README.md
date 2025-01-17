@@ -44,7 +44,7 @@ Note: if you are a contributor or editor of the Duplexity environment, you shoul
 
 ## Contributing
 
-If there are metrics you would like to see added to Duplexity, please get in touch with the development team: [Lexi Xu](lexi.xu12@gmail.com) or [Emily O'Riordan](emily@bodekerscientific.com). 
+We welcome contributions of new or desired metrics to Duplexity. If there are metrics you would like to see added to Duplexity, please feel free to look at our [contributing guide](https://github.com/bodekerscientific/Duplexity/blob/contributing_guide/CONTRIBUTING.md) or open an issue to request a new metric.
 
 ## License
 
